@@ -67,3 +67,92 @@ main,
   line-height: 100%;
   font-size: 16px;
 }
+.head {
+  width: 91%;
+  height: 8%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: darkgray;
+  border: 1px solid gray;
+}
+.headers {
+  width: 33%;
+  height: 100%;
+  flex: 0 1 auto;
+  border: 1px solid gray;
+  line-height: 100%;
+  gap: 2px 2px;
+}
+.status {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  line-height: 100%;
+  gap: 3px 3px;
+}
+.status:hover {
+  cursor: pointer;
+}
+.menu {
+  width: 8%;
+  height: 8%;
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: silver;
+  border: 2px solid gray;
+  padding: 2px;
+}
+.togglerL {
+  width: 99%;
+  height: 99%;
+  border-left: 9px solid;
+  border-top: 9px solid;
+  border-color: gray;
+}
+.togglerR {
+  width: 99%;
+  height: 99%;
+  border-top: 9px solid;
+  border-right: 9px solid;
+  border-color: gray;
+}
+.togglerL:hover,
+.togglerR:hover {
+  cursor: pointer;
+  border-color: whitesmoke;
+}
+.togglerL:active {
+  cursor: pointer;
+  border-left: none;
+  border-top: 9px solid;
+  border-right: 9px solid;
+  border-color: whitesmoke;
+}
+.togglerR:active {
+  cursor: pointer;
+  border-left: 9px solid;
+  border-top: 9px solid;
+  border-right: none;
+  border-color: whitesmoke;
+}
+.side {
+  width: 8%;
+  height: 91%;
+  flex: 1 1 auto;
+  background-color: darkgray;
+  border: 1px solid gray;
+}
+.game {
+  width: 91%;
+  height: 91%;
+  flex: 1 1 auto;
+  display: grid;
+  padding: 0;
+  margin: 0;
+}

@@ -63,6 +63,27 @@ const MINESWEEPER = {
     this.sizeUI = enums.size;
     this.gridMS = enums.grid;
     this.tempMS = enums.temp;
+    this.renderUI(this.typeUI);
+  },
+  renderUI(typeUI) {
+    const ROOT = document.body;
+    ROOT.classList.add('root');
+    ROOT.innerHTML = '<main class="main viewmin" id="main"></main>';
+    const MAIN = document.getElementById('main');
+    MAIN.classList.add(`${typeUI}`);
+    MAIN.innerHTML = `<div class="head order1" id="head">
+      <div class="headers inform" id="inform"></div>
+      <div class="headers status" id="status">
+        <span class="smile" id="smile">🙂</span>
+        <span class="text" id="text">Welcome!</span>
+      </div>
+      <div class="headers timing" id="timing"></div>
+    </div>
+    <nav class="menu order2" id="menu">
+      <div class="togglerL" id="toggler"></div>
+    </nav>
+    <div class="game order3" id="game"></div>
+    <div class="side order4" id="side"></div>`;
   },
 };
 
