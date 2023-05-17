@@ -64,6 +64,7 @@ const MINESWEEPER = {
     this.gridMS = enums.grid;
     this.tempMS = enums.temp;
     this.renderUI(this.typeUI);
+    this.renderMS(this.sizeUI, this.gridMS);
   },
   renderUI(typeUI) {
     const ROOT = document.body;
@@ -85,6 +86,22 @@ const MINESWEEPER = {
     <div class="game order3" id="game"></div>
     <div class="side order4" id="side"></div>`;
   },
+  renderMS(sizeUI, gridMS) {
+    const ROWS = 'div';
+    const CELL = 'div';
+    const SIZE = sizeUI;
+    const GAME = document.getElementById('game');
+    GAME.classList.add(`${gridMS.rows}`);
+    for (let i = 0; i < SIZE; i += 1) {
+      GAME.append(document.createElement(ROWS));
+      GAME.lastChild.classList.add(`${gridMS.cols}`);
+      for (let j = 0; j < SIZE; j += 1) {
+        GAME.lastChild.append(document.createElement(CELL));
+        GAME.lastChild.lastChild.classList.add('cells');
+        GAME.lastChild.lastChild.setAttribute('data-id', `${i * sizeUI + j}`);
+      }
+    }
+  },
 };
 
 function startMineSweeper(enums) {
@@ -92,5 +109,5 @@ function startMineSweeper(enums) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  startMineSweeper(ENUMS.medium);
+  startMineSweeper(ENUMS.small);
 });

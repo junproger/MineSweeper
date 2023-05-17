@@ -156,3 +156,82 @@ main,
   padding: 0;
   margin: 0;
 }
+.rows5{
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.cols5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.rows10 {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.cols10 {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.rows15 {
+  display: grid;
+  grid-template-rows: repeat(15, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.cols15 {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.rows25 {
+  display: grid;
+  grid-template-rows: repeat(25, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.cols25 {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  gap: 1px 1px;
+  padding: 0;
+  margin: 0;
+}
+.cells {
+  min-width: 5px;
+  max-width: 150px;
+  min-height: 5px;
+  max-height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: silver;
+  border-width: 1px;
+  border-style: solid;
+  border-color: gray;
+}
+.cells:hover {
+  cursor: pointer;
+  border-color: silver;
+  background-color: darkgray;
+}
+.cells:active {
+  cursor: pointer;
+  border-color: silver;
+  background-color: lightgray;
+}
