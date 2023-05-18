@@ -67,6 +67,14 @@ const MINESWEEPER = {
     this.renderMS(this.sizeUI, this.tempMS);
     this.addListeners();
   },
+  addToState() {
+    this.MSGAMESTATE = document.getElementById('main');
+    return this.MSGAMESTATE;
+  },
+  getFromState() {
+    const STATE = this.MSGAMESTATE;
+    return STATE;
+  },
   renderUI(typeUI) {
     const ROOT = document.body;
     ROOT.classList.add('root');
@@ -121,13 +129,13 @@ const MINESWEEPER = {
     event.preventDefault();
     const TARGET = event.target;
     if (!TARGET.closest('#main')) return;
-    console.log(TARGET.closest('#main'));
+    this.addToState();
   },
   mainRightHandler(event) {
     event.preventDefault();
     const TARGET = event.target;
-    if (!TARGET.closest('#game')) return;
-    console.log(TARGET.closest('#game'));
+    if (!TARGET.closest('#main')) return;
+    this.addToState();
   },
 
 };
