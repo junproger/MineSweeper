@@ -65,6 +65,7 @@ const MINESWEEPER = {
     this.tempMS = enums.temp;
     this.renderUI(this.typeUI);
     this.renderMS(this.sizeUI, this.tempMS);
+    this.addListeners();
   },
   renderUI(typeUI) {
     const ROOT = document.body;
@@ -102,6 +103,33 @@ const MINESWEEPER = {
       }
     }
   },
+  addListeners() {
+    const MAIN = document.getElementById('main');
+    const HEAD = document.getElementById('head');
+    const MENU = document.getElementById('menu');
+    const GAME = document.getElementById('game');
+    const SIDE = document.getElementById('side');
+    MAIN.addEventListener('click', (event) => this.mainLeftHandler(event));
+    MAIN.addEventListener('contextmenu', (event) => this.mainRightHandler(event));
+    HEAD.addEventListener('click', this.headHandler);
+    MENU.addEventListener('click', this.menuHandler);
+    GAME.addEventListener('click', this.gameLeftHandler);
+    GAME.addEventListener('contextmenu', this.gameRightHandler);
+    SIDE.addEventListener('click', this.sideHandler);
+  },
+  mainLeftHandler(event) {
+    event.preventDefault();
+    const TARGET = event.target;
+    if (!TARGET.closest('#main')) return;
+    console.log(TARGET.closest('#main'));
+  },
+  mainRightHandler(event) {
+    event.preventDefault();
+    const TARGET = event.target;
+    if (!TARGET.closest('#game')) return;
+    console.log(TARGET.closest('#game'));
+  },
+
 };
 
 function startMineSweeper(enums) {
