@@ -130,7 +130,7 @@ const MINESWEEPER = {
     MAIN.addEventListener('click', (event) => this.mainLeftHandler(event));
     MAIN.addEventListener('contextmenu', (event) => this.mainRightHandler(event));
     HEAD.addEventListener('click', this.headHandler);
-    MENU.addEventListener('click', this.menuHandler);
+    MENU.addEventListener('click', (event) => this.menuHandler(event, HEAD, MENU, GAME, SIDE));
     GAME.addEventListener('click', this.gameLeftHandler);
     GAME.addEventListener('contextmenu', this.gameRightHandler);
     SIDE.addEventListener('click', this.sideHandler);
@@ -152,6 +152,33 @@ const MINESWEEPER = {
     const TARGET = event.target;
     if (!TARGET.closest('#game')) return;
     this.addToState();
+  },
+  menuHandler(event, HEAD, MENU, GAME, SIDE) {
+    if (event.target.id === 'toggler') {
+      if (event.target.classList.contains('togglerL')) {
+        event.target.classList.remove('togglerL');
+        event.target.classList.add('togglerR');
+        HEAD.classList.remove('order1');
+        MENU.classList.remove('order2');
+        GAME.classList.remove('order3');
+        SIDE.classList.remove('order4');
+        MENU.classList.add('order1');
+        HEAD.classList.add('order2');
+        SIDE.classList.add('order3');
+        GAME.classList.add('order4');
+      } else {
+        event.target.classList.remove('togglerR');
+        event.target.classList.add('togglerL');
+        MENU.classList.remove('order1');
+        HEAD.classList.remove('order2');
+        SIDE.classList.remove('order3');
+        GAME.classList.remove('order4');
+        HEAD.classList.add('order1');
+        MENU.classList.add('order2');
+        GAME.classList.add('order3');
+        SIDE.classList.add('order4');
+      }
+    }
   },
 
 };
