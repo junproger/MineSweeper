@@ -52,8 +52,9 @@ const ENUMS = {
 const MSGAMECOUNT = () => {
   let count = 0;
   return (num = 0) => {
-    return count += num;
-  }
+    count += num;
+    return count;
+  };
 };
 
 const MINESWEEPER = {
