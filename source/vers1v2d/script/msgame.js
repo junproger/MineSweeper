@@ -49,6 +49,13 @@ const ENUMS = {
   },
 };
 
+const MSGAMECOUNT = () => {
+  let count = 0;
+  return (num = 0) => {
+    return count += num;
+  }
+};
+
 const MINESWEEPER = {
   MSGAMEDATA: null,
   MSGAMESTATE: null,
@@ -56,6 +63,8 @@ const MINESWEEPER = {
   MSGAMEBOMBS: [],
   MSGAMEFLAGS: [],
   MSGAMESCORE: [],
+  GAMECLICKS: MSGAMECOUNT(),
+  CELLSOPEN: MSGAMECOUNT(),
   initialize(enums) {
     this.MSGAMEDATA = enums;
     this.MSGAMEROOT = document.body;
@@ -128,13 +137,19 @@ const MINESWEEPER = {
   mainLeftHandler(event) {
     event.preventDefault();
     const TARGET = event.target;
-    if (!TARGET.closest('#main')) return;
-    this.addToState();
+    if (TARGET.closest('#main')) {
+      this.addToState();
+    }
+    if (!TARGET.closest('.cells')) return;
+    if (!this.GAMECLICKS()) {
+      console.log(this.GAMECLICKS());
+    }
+    console.log(this.GAMECLICKS(1));
   },
   mainRightHandler(event) {
     event.preventDefault();
     const TARGET = event.target;
-    if (!TARGET.closest('#main')) return;
+    if (!TARGET.closest('#game')) return;
     this.addToState();
   },
 
