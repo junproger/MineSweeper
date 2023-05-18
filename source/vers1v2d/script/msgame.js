@@ -85,6 +85,12 @@ const MINESWEEPER = {
     const STATE = this.MSGAMESTATE;
     return STATE;
   },
+  getCoordinate(cellID, sizeUI) {
+    const ROW = Math.trunc(cellID / sizeUI);
+    const COL = cellID % sizeUI;
+    console.log([ROW, COL]);
+    return [ROW, COL];
+  },
   renderUI(typeUI) {
     const ROOT = document.body;
     ROOT.classList.add('root');
@@ -145,12 +151,14 @@ const MINESWEEPER = {
     if (!this.GAMECLICKS()) {
       console.log(this.GAMECLICKS());
     }
+    this.getCoordinate(TARGET.dataset.id, this.MSGAMEDATA.size);
     console.log(this.GAMECLICKS(1));
   },
   mainRightHandler(event) {
     event.preventDefault();
     const TARGET = event.target;
-    if (!TARGET.closest('#game')) return;
+    if (!TARGET.closest('.cells')) return;
+    this.getCoordinate(TARGET.dataset.id, this.MSGAMEDATA.size);
     this.addToState();
   },
   menuHandler(event, HEAD, MENU, GAME, SIDE) {
