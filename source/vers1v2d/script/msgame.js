@@ -232,7 +232,7 @@ const MINESWEEPER = {
     }
     if (!NEAR) {
       TARGET.classList.add('open');
-      // TODO this.hasNulls(ROW, COL);
+      this.openNulls(ROW, COL);
       TARGET.append(NEAR);
       return;
     }
@@ -262,8 +262,18 @@ const MINESWEEPER = {
         }
       }
     }
-    console.log('NEAR ', amount);
     return amount;
+  },
+  openNulls(ROW, COL) {
+    for (let i = -1; i <= 1; i += 1) {
+      for (let j = -1; j <= 1; j += 1) {
+        const NROW = ROW + i;
+        const NCOL = COL + j;
+        if (this.isValid(NROW, NCOL)) {
+          this.openingCell([NROW, NCOL]);
+        }
+      }
+    }
   },
 
 };
