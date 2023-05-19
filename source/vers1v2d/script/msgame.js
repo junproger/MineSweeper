@@ -88,7 +88,6 @@ const MINESWEEPER = {
   getCoordinate(CELLID, SIZEUI) {
     const ROW = Math.trunc(CELLID / SIZEUI);
     const COL = CELLID % SIZEUI;
-    console.log('CELL ', [ROW, COL], 'ID ', CELLID);
     return [ROW, COL];
   },
   addBombs(CELLID) {
@@ -206,7 +205,7 @@ const MINESWEEPER = {
       console.log(`START ON ${CELLID}`);
       this.addBombs(CELLID);
     }
-    console.log('CLICK ', this.GAMECLICKS(1));
+    this.GAMECLICKS(1);
     if (this.isBomb(CELLID)) {
       console.log(`BOOM! ON ${CELLID}`);
       TARGET.classList.add('open');
@@ -226,6 +225,7 @@ const MINESWEEPER = {
     this.OPENEDCELLS(1);
     // TODO this.isWinner();
     if (NEAR) {
+      this.numbColorize(TARGET, NEAR);
       TARGET.classList.add('open');
       TARGET.append(NEAR);
       return;
@@ -233,8 +233,6 @@ const MINESWEEPER = {
     if (!NEAR) {
       TARGET.classList.add('open');
       this.openNulls(ROW, COL);
-      TARGET.append(NEAR);
-      return;
     }
   },
   isBomb(CELLID) {
@@ -272,6 +270,45 @@ const MINESWEEPER = {
         if (this.isValid(NROW, NCOL)) {
           this.openingCell([NROW, NCOL]);
         }
+      }
+    }
+  },
+  numbColorize(TARGET, NEAR) {
+    switch (NEAR) {
+      case (1): {
+        TARGET.classList.add('blue');
+        break;
+      }
+      case (2): {
+        TARGET.classList.add('green');
+        break;
+      }
+      case (3): {
+        TARGET.classList.add('red');
+        break;
+      }
+      case (4): {
+        TARGET.classList.add('darkblue');
+        break;
+      }
+      case (5): {
+        TARGET.classList.add('darkred');
+        break;
+      }
+      case (6): {
+        TARGET.classList.add('cyan');
+        break;
+      }
+      case (7): {
+        TARGET.classList.add('black');
+        break;
+      }
+      case (8): {
+        TARGET.classList.add('grey');
+        break;
+      }
+      default: {
+        break;
       }
     }
   },

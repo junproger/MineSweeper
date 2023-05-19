@@ -261,3 +261,27 @@ main,
   border-color: darkgray;
   background-color: rosybrown;
 }
+.blue {
+  color: blue;
+}
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
+.darkblue {
+  color: darkblue;
+}
+.darkred {
+  color: darkred;
+}
+.cyan {
+  color: cyan;
+}
+.black {
+  color: black;
+}
+.grey {
+  color: grey;
+}
