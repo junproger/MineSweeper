@@ -247,3 +247,17 @@ main,
 .order4 {
   order: 4;
 }
+.open,
+.open:hover,
+.open:active {
+  cursor: default;
+  border-color: darkgray;
+  background-color: lightgray;
+}
+.mark,
+.mark:hover,
+.mark:active {
+  cursor: pointer;
+  border-color: darkgray;
+  background-color: rosybrown;
+}
