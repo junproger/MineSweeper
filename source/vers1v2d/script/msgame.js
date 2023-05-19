@@ -103,9 +103,6 @@ const MINESWEEPER = {
     }
     console.log('ADD BOMBS ', this.MSGAMEBOMBS);
   },
-  isBomb(CELLID) {
-    return this.MSGAMEBOMBS.includes(CELLID);
-  },
   renderUI(TYPEUI) {
     const ROOT = document.body;
     ROOT.classList.add('root');
@@ -225,10 +222,48 @@ const MINESWEEPER = {
     const TARGET = PARENT.children[ROW].children[COL];
     if (TARGET.classList.contains('open')) return;
     if (TARGET.classList.contains('mark')) return;
-    // TODO this.hasBombs(ROW, COL);
-    TARGET.classList.add('open');
-    TARGET.append('open');
+    const NEAR = this.nearBombs(ROW, COL);
     this.OPENEDCELLS(1);
+    // TODO this.isWinner();
+    if (NEAR) {
+      TARGET.classList.add('open');
+      TARGET.append(NEAR);
+      return;
+    }
+    if (!NEAR) {
+      TARGET.classList.add('open');
+      // TODO this.hasNulls(ROW, COL);
+      TARGET.append(NEAR);
+      return;
+    }
+  },
+  isBomb(CELLID) {
+    return this.MSGAMEBOMBS.includes(CELLID);
+  },
+  isValid(NROW, NCOL) {
+    let nrowtrue = false;
+    let ncoltrue = false;
+    const SIZEUI = this.MSGAMEDATA.size - 1;
+    if (NROW >= 0 && NROW <= SIZEUI) nrowtrue = true;
+    if (NCOL >= 0 && NCOL <= SIZEUI) ncoltrue = true;
+    return (nrowtrue && ncoltrue);
+  },
+  nearBombs(ROW, COL) {
+    let amount = 0;
+    const PARENT = document.getElementById('game');
+    for (let i = -1; i <= 1; i += 1) {
+      for (let j = -1; j <= 1; j += 1) {
+        const NROW = ROW + i;
+        const NCOL = COL + j;
+        if (this.isValid(NROW, NCOL)) {
+          const TARGET = PARENT.children[NROW].children[NCOL];
+          const CELLID = +TARGET.dataset.id;
+          if (this.isBomb(CELLID)) amount += 1;
+        }
+      }
+    }
+    console.log('NEAR ', amount);
+    return amount;
   },
 
 };
