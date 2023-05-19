@@ -88,8 +88,20 @@ const MINESWEEPER = {
   getCoordinate(cellID, sizeUI) {
     const ROW = Math.trunc(cellID / sizeUI);
     const COL = cellID % sizeUI;
-    console.log([ROW, COL]);
+    console.log([ROW, COL], cellID);
     return [ROW, COL];
+  },
+  addBombs(cellID) {
+    const cellsMS = this.MSGAMEDATA.cells;
+    let msBombs = this.MSGAMEDATA.bombs;
+    while (msBombs) {
+      const randCell = Math.floor(Math.random(cellsMS) * cellsMS);
+      if (randCell !== cellID && !this.MSGAMEBOMBS.includes(randCell)) {
+        this.MSGAMEBOMBS.push(randCell);
+        msBombs -= 1;
+      }
+    }
+    console.log('BOMBS: ', this.MSGAMEBOMBS);
   },
   renderUI(typeUI) {
     const ROOT = document.body;
@@ -149,7 +161,7 @@ const MINESWEEPER = {
     }
     if (!TARGET.closest('.cells')) return;
     if (!this.GAMECLICKS()) {
-      console.log(this.GAMECLICKS());
+      this.addBombs(TARGET.dataset.id);
     }
     this.getCoordinate(TARGET.dataset.id, this.MSGAMEDATA.size);
     console.log(this.GAMECLICKS(1));
