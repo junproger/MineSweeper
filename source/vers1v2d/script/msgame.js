@@ -65,7 +65,7 @@ const MINESWEEPER = {
   MSGAMEFLAGS: [],
   MSGAMESCORE: [],
   GAMECLICKS: MSGAMECOUNT(),
-  CELLSOPEN: MSGAMECOUNT(),
+  OPENEDCELLS: MSGAMECOUNT(),
   initialize(enums) {
     this.MSGAMEDATA = enums;
     this.MSGAMEROOT = document.body;
@@ -162,9 +162,6 @@ const MINESWEEPER = {
     if (TARGET.closest('#main')) {
       this.addToState();
     }
-    const CELLID = +TARGET.dataset.id;
-    if (!TARGET.closest('.cells')) return;
-    this.getCoordinate(CELLID, this.MSGAMEDATA.size);
   },
   mainRightHandler(event) {
     event.preventDefault();
@@ -172,9 +169,6 @@ const MINESWEEPER = {
     if (TARGET.closest('#game')) {
       this.addToState();
     }
-    const CELLID = +TARGET.dataset.id;
-    if (!TARGET.closest('.cells')) return;
-    this.getCoordinate(CELLID, this.MSGAMEDATA.size);
   },
   menuHandler(event, HEAD, MENU, GAME, SIDE) {
     if (event.target.id === 'toggler') {
@@ -210,18 +204,31 @@ const MINESWEEPER = {
     if (event.target.classList.contains('open')) return;
     const TARGET = event.target;
     const CELLID = +TARGET.dataset.id;
+    const SIZEUI = this.MSGAMEDATA.size;
     if (this.GAMECLICKS() === 0) {
       console.log(`START ON ${CELLID}`);
       this.addBombs(CELLID);
     }
     console.log('CLICK ', this.GAMECLICKS(1));
     if (this.isBomb(CELLID)) {
+      console.log(`BOOM! ON ${CELLID}`);
       TARGET.classList.add('open');
       TARGET.append('💥');
       // TODO this.gameOver(CELLID);
     } else {
-      // TODO this.cellOpen(CELLID);
+      this.openingCell(this.getCoordinate(CELLID, SIZEUI));
     }
+  },
+  openingCell(arrowcol) {
+    const [ ROW, COL ] = arrowcol;
+    const PARENT = document.getElementById('game');
+    const TARGET = PARENT.children[ROW].children[COL];
+    if (TARGET.classList.contains('open')) return;
+    if (TARGET.classList.contains('mark')) return;
+    // TODO this.hasBombs(ROW, COL);
+    TARGET.classList.add('open');
+    TARGET.append('open');
+    this.OPENEDCELLS(1);
   },
 
 };
