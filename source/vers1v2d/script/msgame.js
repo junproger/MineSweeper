@@ -103,6 +103,9 @@ const MINESWEEPER = {
     }
     console.log('BOMBS: ', this.MSGAMEBOMBS);
   },
+  isBomb(cellID) {
+    return this.MSGAMEBOMBS.includes(cellID);
+  },
   renderUI(typeUI) {
     const ROOT = document.body;
     ROOT.classList.add('root');
