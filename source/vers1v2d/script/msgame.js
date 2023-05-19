@@ -69,12 +69,12 @@ const MINESWEEPER = {
   initialize(enums) {
     this.MSGAMEDATA = enums;
     this.MSGAMEROOT = document.body;
-    this.typeUI = enums.type;
-    this.sizeUI = enums.size;
-    this.gridMS = enums.grid;
-    this.tempMS = enums.temp;
-    this.renderUI(this.typeUI);
-    this.renderMS(this.sizeUI, this.tempMS);
+    this.TYPEUI = enums.type;
+    this.SIZEUI = enums.size;
+    this.GRIDMS = enums.grid;
+    this.TEMPMS = enums.temp;
+    this.renderUI(this.TYPEUI);
+    this.renderMS(this.SIZEUI, this.TEMPMS);
     this.addListeners();
   },
   addToState() {
@@ -85,33 +85,33 @@ const MINESWEEPER = {
     const STATE = this.MSGAMESTATE;
     return STATE;
   },
-  getCoordinate(cellID, sizeUI) {
-    const ROW = Math.trunc(cellID / sizeUI);
-    const COL = cellID % sizeUI;
-    console.log('CELL ', [ROW, COL], 'ID ', cellID);
+  getCoordinate(CELLID, SIZEUI) {
+    const ROW = Math.trunc(CELLID / SIZEUI);
+    const COL = CELLID % SIZEUI;
+    console.log('CELL ', [ROW, COL], 'ID ', CELLID);
     return [ROW, COL];
   },
-  addBombs(cellID) {
-    const cellsMS = this.MSGAMEDATA.cells;
-    let msBombs = this.MSGAMEDATA.bombs;
-    while (msBombs) {
-      const randCell = Math.floor(Math.random(cellsMS) * cellsMS);
-      if (randCell !== cellID && !this.MSGAMEBOMBS.includes(randCell)) {
-        this.MSGAMEBOMBS.push(randCell);
-        msBombs -= 1;
+  addBombs(CELLID) {
+    const CELLS = this.MSGAMEDATA.cells;
+    let BOMBS = this.MSGAMEDATA.bombs;
+    while (BOMBS) {
+      const RANDOM = Math.floor(Math.random(CELLS) * CELLS);
+      if (RANDOM !== CELLID && !this.MSGAMEBOMBS.includes(RANDOM)) {
+        this.MSGAMEBOMBS.push(RANDOM);
+        BOMBS -= 1;
       }
     }
     console.log('ADD BOMBS ', this.MSGAMEBOMBS);
   },
-  isBomb(cellID) {
-    return this.MSGAMEBOMBS.includes(cellID);
+  isBomb(CELLID) {
+    return this.MSGAMEBOMBS.includes(CELLID);
   },
-  renderUI(typeUI) {
+  renderUI(TYPEUI) {
     const ROOT = document.body;
     ROOT.classList.add('root');
     ROOT.innerHTML = '<main class="main viewmin" id="main"></main>';
     const MAIN = document.getElementById('main');
-    MAIN.classList.add(`${typeUI}`);
+    MAIN.classList.add(`${TYPEUI}`);
     MAIN.innerHTML = `<div class="head order1" id="head">
       <div class="headers inform" id="inform"></div>
       <div class="headers status" id="status">
@@ -126,19 +126,19 @@ const MINESWEEPER = {
     <div class="game order3" id="game"></div>
     <div class="side order4" id="side"></div>`;
   },
-  renderMS(sizeUI, tempMS) {
+  renderMS(SIZEUI, TEMPMS) {
     const ROWS = 'div';
     const CELL = 'div';
-    const SIZE = sizeUI;
+    const SIZE = SIZEUI;
     const GAME = document.getElementById('game');
-    GAME.classList.add(`${tempMS.rows}`);
+    GAME.classList.add(`${TEMPMS.rows}`);
     for (let i = 0; i < SIZE; i += 1) {
       GAME.append(document.createElement(ROWS));
-      GAME.lastChild.classList.add(`${tempMS.cols}`);
+      GAME.lastChild.classList.add(`${TEMPMS.cols}`);
       for (let j = 0; j < SIZE; j += 1) {
         GAME.lastChild.append(document.createElement(CELL));
         GAME.lastChild.lastChild.classList.add('cells');
-        GAME.lastChild.lastChild.setAttribute('data-id', `${i * sizeUI + j}`);
+        GAME.lastChild.lastChild.setAttribute('data-id', `${i * SIZEUI + j}`);
       }
     }
   },
@@ -162,9 +162,9 @@ const MINESWEEPER = {
     if (TARGET.closest('#main')) {
       this.addToState();
     }
-    const cellID = +TARGET.dataset.id;
+    const CELLID = +TARGET.dataset.id;
     if (!TARGET.closest('.cells')) return;
-    this.getCoordinate(cellID, this.MSGAMEDATA.size);
+    this.getCoordinate(CELLID, this.MSGAMEDATA.size);
   },
   mainRightHandler(event) {
     event.preventDefault();
@@ -172,9 +172,9 @@ const MINESWEEPER = {
     if (TARGET.closest('#game')) {
       this.addToState();
     }
-    const cellID = +TARGET.dataset.id;
+    const CELLID = +TARGET.dataset.id;
     if (!TARGET.closest('.cells')) return;
-    this.getCoordinate(cellID, this.MSGAMEDATA.size);
+    this.getCoordinate(CELLID, this.MSGAMEDATA.size);
   },
   menuHandler(event, HEAD, MENU, GAME, SIDE) {
     if (event.target.id === 'toggler') {
@@ -209,18 +209,18 @@ const MINESWEEPER = {
     if (event.target.classList.contains('mark')) return;
     if (event.target.classList.contains('open')) return;
     const TARGET = event.target;
-    const cellID = +TARGET.dataset.id;
+    const CELLID = +TARGET.dataset.id;
     if (this.GAMECLICKS() === 0) {
-      console.log(`START ON ${cellID}`);
-      this.addBombs(cellID);
+      console.log(`START ON ${CELLID}`);
+      this.addBombs(CELLID);
     }
     console.log('CLICK ', this.GAMECLICKS(1));
-    if (this.isBomb(cellID)) {
+    if (this.isBomb(CELLID)) {
       TARGET.classList.add('open');
       TARGET.append('💥');
-      // TODO this.gameOver(cellID);
+      // TODO this.gameOver(CELLID);
     } else {
-      // TODO this.cellOpen(cellID);
+      // TODO this.cellOpen(CELLID);
     }
   },
 
