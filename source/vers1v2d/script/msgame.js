@@ -88,7 +88,7 @@ const MINESWEEPER = {
   getCoordinate(cellID, sizeUI) {
     const ROW = Math.trunc(cellID / sizeUI);
     const COL = cellID % sizeUI;
-    console.log([ROW, COL], cellID);
+    console.log('CELL ', [ROW, COL], 'ID ', cellID);
     return [ROW, COL];
   },
   addBombs(cellID) {
@@ -101,7 +101,7 @@ const MINESWEEPER = {
         msBombs -= 1;
       }
     }
-    console.log('BOMBS: ', this.MSGAMEBOMBS);
+    console.log('ADD BOMBS ', this.MSGAMEBOMBS);
   },
   isBomb(cellID) {
     return this.MSGAMEBOMBS.includes(cellID);
@@ -152,7 +152,7 @@ const MINESWEEPER = {
     MAIN.addEventListener('contextmenu', (event) => this.mainRightHandler(event));
     HEAD.addEventListener('click', this.headHandler);
     MENU.addEventListener('click', (event) => this.menuHandler(event, HEAD, MENU, GAME, SIDE));
-    GAME.addEventListener('click', this.gameLeftHandler);
+    GAME.addEventListener('click', (event) => this.gameLeftHandler(event));
     GAME.addEventListener('contextmenu', this.gameRightHandler);
     SIDE.addEventListener('click', this.sideHandler);
   },
@@ -162,19 +162,19 @@ const MINESWEEPER = {
     if (TARGET.closest('#main')) {
       this.addToState();
     }
+    const cellID = +TARGET.dataset.id;
     if (!TARGET.closest('.cells')) return;
-    if (!this.GAMECLICKS()) {
-      this.addBombs(TARGET.dataset.id);
-    }
-    this.getCoordinate(TARGET.dataset.id, this.MSGAMEDATA.size);
-    console.log(this.GAMECLICKS(1));
+    this.getCoordinate(cellID, this.MSGAMEDATA.size);
   },
   mainRightHandler(event) {
     event.preventDefault();
     const TARGET = event.target;
+    if (TARGET.closest('#game')) {
+      this.addToState();
+    }
+    const cellID = +TARGET.dataset.id;
     if (!TARGET.closest('.cells')) return;
-    this.getCoordinate(TARGET.dataset.id, this.MSGAMEDATA.size);
-    this.addToState();
+    this.getCoordinate(cellID, this.MSGAMEDATA.size);
   },
   menuHandler(event, HEAD, MENU, GAME, SIDE) {
     if (event.target.id === 'toggler') {
@@ -201,6 +201,26 @@ const MINESWEEPER = {
         GAME.classList.add('order3');
         SIDE.classList.add('order4');
       }
+    }
+  },
+  gameLeftHandler(event) {
+    if (!event.target.dataset.id) return;
+    if (!event.target.closest('.cells')) return;
+    if (event.target.classList.contains('mark')) return;
+    if (event.target.classList.contains('open')) return;
+    const TARGET = event.target;
+    const cellID = +TARGET.dataset.id;
+    if (this.GAMECLICKS() === 0) {
+      console.log(`START ON ${cellID}`);
+      this.addBombs(cellID);
+    }
+    console.log('CLICK ', this.GAMECLICKS(1));
+    if (this.isBomb(cellID)) {
+      TARGET.classList.add('open');
+      TARGET.append('💥');
+      // TODO this.gameOver(cellID);
+    } else {
+      // TODO this.cellOpen(cellID);
     }
   },
 
