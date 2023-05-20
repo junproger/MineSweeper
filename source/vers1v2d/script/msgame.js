@@ -85,7 +85,8 @@ const MINESWEEPER = {
     const STATE = this.MSGAMESTATE;
     return STATE;
   },
-  getCoordinate(CELLID, SIZEUI) {
+  getCoordinate(CELLID) {
+    const SIZEUI = this.MSGAMEDATA.size;
     const ROW = Math.trunc(CELLID / SIZEUI);
     const COL = CELLID % SIZEUI;
     return [ROW, COL];
@@ -202,7 +203,6 @@ const MINESWEEPER = {
     if (event.target.classList.contains('open')) return;
     const TARGET = event.target;
     const CELLID = +TARGET.dataset.id;
-    const SIZEUI = this.MSGAMEDATA.size;
     if (this.GAMECLICKS() === 0) {
       console.log(`START ON ${CELLID}`);
       this.addBombs(CELLID);
@@ -212,9 +212,9 @@ const MINESWEEPER = {
       console.log(`BOOM! ON ${CELLID}`);
       TARGET.classList.add('open');
       TARGET.append('💥');
-      // TODO this.gameOver(CELLID);
+      this.gameOver();
     } else {
-      this.openingCell(this.getCoordinate(CELLID, SIZEUI));
+      this.openingCell(this.getCoordinate(CELLID));
     }
   },
   gameRightHandler(event) {
@@ -238,7 +238,16 @@ const MINESWEEPER = {
       console.log('DEL FLAG ', FLAGS);
     }
   },
-
+  gameOver() {
+    console.log('GAME OVER, YOU LOSE!');
+    const SMILE = document.getElementById('smile');
+    const TEXT = document.getElementById('text');
+    SMILE.firstChild.remove();
+    TEXT.firstChild.remove();
+    TEXT.append('YOU LOSE!');
+    SMILE.append('🤕');
+    this.openLeftover();
+  },
   gameWinner() {
     console.log('GAME OVER, YOU WON!');
     const SMILE = document.getElementById('smile');
@@ -248,7 +257,6 @@ const MINESWEEPER = {
     TEXT.append('YOU WON!');
     SMILE.append('🤩');
   },
-
   isWinner() {
     const CELLS = this.MSGAMEDATA.cells;
     const MINES = this.MSGAMEDATA.bombs;
@@ -257,7 +265,36 @@ const MINESWEEPER = {
     if ((this.OPENEDCELLS() === (CELLS - MINES)) &&
       BOMBS.every((elm) => FLAGS.includes(elm))) this.gameWinner();
   },
-
+  openLeftover() {
+    const GAME = document.getElementById('game');
+    for (let i = 0; i < GAME.children.length; i += 1) {
+      const ELEM = GAME.children[i];
+      for (let j = 0; j < ELEM.children.length; j += 1) {
+        const ITEM = ELEM.children[j];
+        const mark = ITEM.classList.contains('mark');
+        const open = ITEM.classList.contains('open');
+        if (!open && !mark) {
+          const ITEMID = +ITEM.dataset.id;
+          const bombs = this.isBomb(ITEMID);
+          if (bombs) {
+            ITEM.classList.add('open');
+            ITEM.append('💣');
+          }
+          if (!bombs) {
+            const [ROW, COL] = this.getCoordinate(ITEMID);
+            const NEAR = this.nearBombs(ROW, COL);
+            if (NEAR) {
+              ITEM.append(NEAR);
+              ITEM.classList.add('open');
+              this.numbColorize(ITEM, NEAR);
+            } else {
+              ITEM.classList.add('open');
+            }
+          }
+        }
+      }
+    }
+  },
   openingCell(arrowcol) {
     const [ ROW, COL ] = arrowcol;
     const PARENT = document.getElementById('game');
