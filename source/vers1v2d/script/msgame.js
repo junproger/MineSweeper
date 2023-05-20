@@ -112,7 +112,7 @@ const MINESWEEPER = {
       <div class="headers inform" id="inform"></div>
       <div class="headers status" id="status">
         <span class="smile" id="smile">🙂</span>
-        <span class="text" id="text">Welcome!</span>
+        <span class="text" id="text">WELCOME!</span>
       </div>
       <div class="headers timing" id="timing"></div>
     </div>
