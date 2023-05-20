@@ -149,7 +149,7 @@ const MINESWEEPER = {
     HEAD.addEventListener('click', this.headHandler);
     MENU.addEventListener('click', (event) => this.menuHandler(event, HEAD, MENU, GAME, SIDE));
     GAME.addEventListener('click', (event) => this.gameLeftHandler(event));
-    GAME.addEventListener('contextmenu', this.gameRightHandler);
+    GAME.addEventListener('contextmenu', (event) => this.gameRightHandler(event));
     SIDE.addEventListener('click', this.sideHandler);
   },
   mainLeftHandler(event) {
@@ -215,6 +215,27 @@ const MINESWEEPER = {
       // TODO this.gameOver(CELLID);
     } else {
       this.openingCell(this.getCoordinate(CELLID, SIZEUI));
+    }
+  },
+  gameRightHandler(event) {
+    event.preventDefault();
+    if (!event.target.dataset.id) return;
+    if (!event.target.closest('.cells')) return;
+    if (event.target.classList.contains('open')) return;
+    const TARGET = event.target;
+    const CELLID = +TARGET.dataset.id;
+    const FLAGS = this.MSGAMEFLAGS;
+    if (!TARGET.classList.contains('mark')) {
+      FLAGS.push(CELLID);
+      TARGET.classList.add('mark');
+      TARGET.append('🚩');
+      console.log('ADD FLAG ', FLAGS);
+      // TODO this.isWinner();
+    } else {
+      FLAGS.splice(FLAGS.indexOf(CELLID), 1);
+      TARGET.classList.remove('mark');
+      TARGET.firstChild.remove();
+      console.log('DEL FLAG ', FLAGS);
     }
   },
   openingCell(arrowcol) {
