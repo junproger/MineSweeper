@@ -230,7 +230,7 @@ const MINESWEEPER = {
       TARGET.classList.add('mark');
       TARGET.append('🚩');
       console.log('ADD FLAG ', FLAGS);
-      // TODO this.isWinner();
+      this.isWinner();
     } else {
       FLAGS.splice(FLAGS.indexOf(CELLID), 1);
       TARGET.classList.remove('mark');
@@ -238,6 +238,26 @@ const MINESWEEPER = {
       console.log('DEL FLAG ', FLAGS);
     }
   },
+
+  gameWinner() {
+    console.log('GAME OVER, YOU WON!');
+    const SMILE = document.getElementById('smile');
+    const TEXT = document.getElementById('text');
+    SMILE.firstChild.remove();
+    TEXT.firstChild.remove();
+    TEXT.append('YOU WON!');
+    SMILE.append('🤩');
+  },
+
+  isWinner() {
+    const CELLS = this.MSGAMEDATA.cells;
+    const MINES = this.MSGAMEDATA.bombs;
+    const BOMBS = this.MSGAMEBOMBS;
+    const FLAGS = this.MSGAMEFLAGS;
+    if ((this.OPENEDCELLS() === (CELLS - MINES)) &&
+      BOMBS.every((elm) => FLAGS.includes(elm))) this.gameWinner();
+  },
+
   openingCell(arrowcol) {
     const [ ROW, COL ] = arrowcol;
     const PARENT = document.getElementById('game');
@@ -246,7 +266,7 @@ const MINESWEEPER = {
     if (TARGET.classList.contains('mark')) return;
     const NEAR = this.nearBombs(ROW, COL);
     this.OPENEDCELLS(1);
-    // TODO this.isWinner();
+    this.isWinner();
     if (NEAR) {
       this.numbColorize(TARGET, NEAR);
       TARGET.classList.add('open');
