@@ -167,6 +167,7 @@ const MINESWEEPER = {
     }
   },
   menuHandler(event, HEAD, MENU, GAME, SIDE) {
+    event.preventDefault();
     if (event.target.id === 'toggler') {
       if (event.target.classList.contains('togglerL')) {
         event.target.classList.remove('togglerL');
@@ -194,6 +195,7 @@ const MINESWEEPER = {
     }
   },
   gameLeftHandler(event) {
+    event.preventDefault();
     if (!event.target.dataset.id) return;
     if (!event.target.closest('.cells')) return;
     if (event.target.classList.contains('mark')) return;
@@ -205,7 +207,7 @@ const MINESWEEPER = {
       console.log(`START ON ${CELLID}`);
       this.addBombs(CELLID);
     }
-    this.GAMECLICKS(1);
+    console.log('CLICK ', this.GAMECLICKS(1));
     if (this.isBomb(CELLID)) {
       console.log(`BOOM! ON ${CELLID}`);
       TARGET.classList.add('open');
