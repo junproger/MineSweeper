@@ -282,10 +282,8 @@ const MINESWEEPER = {
     console.log('GAME OVER, YOU LOSE!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
-    SMILE.firstChild.remove();
-    TEXT.firstChild.remove();
-    TEXT.append('YOU LOSE!');
-    SMILE.append('🤕');
+    SMILE.firstChild.textContent = '🤕';
+    TEXT.firstChild.textContent = 'YOU LOSE!';
     this.openLeftover();
   },
   gameWinner() {
@@ -293,10 +291,8 @@ const MINESWEEPER = {
     console.log('GAME OVER, YOU WON!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
-    SMILE.firstChild.remove();
-    TEXT.firstChild.remove();
-    TEXT.append('YOU WON!');
-    SMILE.append('🤩');
+    SMILE.firstChild.textContent = '🤩';
+    TEXT.firstChild.textContent = 'YOU WON!';
   },
   isWinner() {
     const CELLS = this.MSGAMEDATA.cells;
