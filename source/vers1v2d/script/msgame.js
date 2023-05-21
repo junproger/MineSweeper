@@ -100,6 +100,13 @@ const MINESWEEPER = {
     const STATE = this.MSGAMESTATE;
     return STATE;
   },
+  gameInform() {
+    const FLAGS = document.querySelector('.flags');
+    const BOMBS = document.querySelector('.bombs');
+    const TOTAL = this.MSGAMEFLAGS.length;
+    BOMBS.firstChild.textContent = `${this.MSGAMEBOMBS.length - TOTAL}`;
+    FLAGS.firstChild.textContent = `${TOTAL}`;
+  },
   getCoordinate(CELLID) {
     const SIZEUI = this.MSGAMEDATA.size;
     const ROW = Math.trunc(CELLID / SIZEUI);
@@ -126,7 +133,10 @@ const MINESWEEPER = {
     const MAIN = document.getElementById('main');
     MAIN.classList.add(`${TYPEUI}`);
     MAIN.innerHTML = `<div class="head order1" id="head">
-      <div class="headers inform" id="inform"></div>
+      <div class="headers inform" id="inform">
+        <div class="flags"><span>0</span><span>🚩</span></div>
+        <div class="bombs"><span>0</span><span>💣</span></div>
+      </div>
       <div class="headers status" id="status">
         <span class="smile" id="smile">🙂</span>
         <span class="text" id="text">WELCOME!</span>
@@ -174,6 +184,7 @@ const MINESWEEPER = {
     const TARGET = event.target;
     if (TARGET.closest('#main')) {
       this.addToState();
+      this.gameInform();
     }
   },
   mainRightHandler(event) {
@@ -181,6 +192,7 @@ const MINESWEEPER = {
     const TARGET = event.target;
     if (TARGET.closest('#game')) {
       this.addToState();
+      this.gameInform();
     }
   },
   headHandler(event) {
