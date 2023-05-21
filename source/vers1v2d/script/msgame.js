@@ -104,7 +104,7 @@ const MINESWEEPER = {
     const FLAGS = document.querySelector('.flags');
     const BOMBS = document.querySelector('.bombs');
     const SUMFLAGS = this.MSGAMEFLAGS.length;
-    let LEFTBOMBS = this.MSGAMEBOMBS.length - SUMFLAGS;
+    const LEFTBOMBS = this.MSGAMEBOMBS.length - SUMFLAGS;
     if (LEFTBOMBS < 0) return;
     BOMBS.firstChild.textContent = `${LEFTBOMBS}`;
     FLAGS.firstChild.textContent = `${SUMFLAGS}`;
@@ -290,6 +290,7 @@ const MINESWEEPER = {
   gameOver() {
   // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
+    // eslint-disable-next-line no-console
     console.log('GAME OVER, YOU LOSE!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
@@ -298,8 +299,9 @@ const MINESWEEPER = {
     this.openLeftover();
   },
   gameWinner() {
-  // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
+    // eslint-disable-next-line no-console
     console.log('GAME OVER, YOU WON!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
