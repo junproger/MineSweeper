@@ -250,13 +250,13 @@ const MINESWEEPER = {
     const CELLID = +TARGET.dataset.id;
     if (this.GAMECLICKS() === 0) {
       // eslint-disable-next-line no-console
-      console.log(`START ON ${CELLID}`);
+      console.log(`START❗ ON ${CELLID}`);
       this.addBombs(CELLID);
     }
     this.GAMECLICKS(1);
     if (this.isBomb(CELLID)) {
       // eslint-disable-next-line no-console
-      console.log(`BOOM! ON ${CELLID}`);
+      console.log(`BOOM 💥 BOMB ON ${CELLID}`);
       TARGET.classList.add('open');
       TARGET.append('💥');
       this.gameOver();
@@ -291,7 +291,7 @@ const MINESWEEPER = {
   // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     // eslint-disable-next-line no-console
-    console.log('GAME OVER, YOU LOSE!');
+    console.log('GAME OVER❗ 🤕 YOU LOSE!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
     SMILE.firstChild.textContent = '🤕';
@@ -302,7 +302,7 @@ const MINESWEEPER = {
     // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     // eslint-disable-next-line no-console
-    console.log('GAME OVER, YOU WON!');
+    console.log('GAME OVER❗ 🤩 YOU WON!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
     SMILE.firstChild.textContent = '🤩';
