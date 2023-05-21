@@ -107,6 +107,10 @@ const MINESWEEPER = {
     BOMBS.firstChild.textContent = `${this.MSGAMEBOMBS.length - TOTAL}`;
     FLAGS.firstChild.textContent = `${TOTAL}`;
   },
+  gameClicks() {
+    const CLICKS = document.querySelector('.clicks');
+    CLICKS.firstChild.textContent = `${this.GAMECLICKS()}`;
+  },
   getCoordinate(CELLID) {
     const SIZEUI = this.MSGAMEDATA.size;
     const ROW = Math.trunc(CELLID / SIZEUI);
@@ -141,7 +145,10 @@ const MINESWEEPER = {
         <span class="smile" id="smile">🙂</span>
         <span class="text" id="text">WELCOME!</span>
       </div>
-      <div class="headers timing" id="timing"></div>
+      <div class="headers timing" id="timing">
+        <div class="clicks"><span>0</span><span>👆</span></div>
+        <div class="times"><span>0</span><span>⏳</span></div>
+      </div>
     </div>
     <nav class="menu order2" id="menu">
       <div class="togglerL" id="toggler"></div>
@@ -185,6 +192,7 @@ const MINESWEEPER = {
     if (TARGET.closest('#main')) {
       this.addToState();
       this.gameInform();
+      this.gameClicks();
     }
   },
   mainRightHandler(event) {
@@ -193,6 +201,7 @@ const MINESWEEPER = {
     if (TARGET.closest('#game')) {
       this.addToState();
       this.gameInform();
+      this.gameClicks();
     }
   },
   headHandler(event) {
@@ -242,8 +251,7 @@ const MINESWEEPER = {
       console.log(`START ON ${CELLID}`);
       this.addBombs(CELLID);
     }
-    // eslint-disable-next-line no-console
-    console.log('CLICK ', this.GAMECLICKS(1));
+    this.GAMECLICKS(1);
     if (this.isBomb(CELLID)) {
       // eslint-disable-next-line no-console
       console.log(`BOOM! ON ${CELLID}`);
@@ -262,6 +270,7 @@ const MINESWEEPER = {
     const TARGET = event.target;
     const CELLID = +TARGET.dataset.id;
     const FLAGS = this.MSGAMEFLAGS;
+    this.GAMECLICKS(1);
     if (!TARGET.classList.contains('mark')) {
       FLAGS.push(CELLID);
       TARGET.classList.add('mark');

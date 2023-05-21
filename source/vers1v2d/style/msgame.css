@@ -105,6 +105,15 @@ main,
 .status:hover {
   cursor: pointer;
 }
+.timing {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  line-height: 100%;
+  gap: 5px 5px;
+  color: crimson;
+}
 .menu {
   width: 8%;
   height: 8%;
