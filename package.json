@@ -2,10 +2,17 @@
   "name": "minesweeper",
   "version": "1.0.0",
   "description": "MineSweeper by JunProger",
-  "main": "./source/msgame.html",
-  "source": "./source/msgame.html",
+  "source": "./source/vers1v2d/msgame.html",
+  "targets": {
+    "default": {
+      "distDir": "./build"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel serve --open",
+    "build": "parcel build --public-url ./",
+    "watch": "parcel watch ./source/vers1v2d/msgame.html"
   },
   "repository": {
     "type": "git",
@@ -20,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/junproger/MineSweeper/issues"
   },
-  "homepage": "https://github.com/junproger/MineSweeper#readme"
+  "homepage": "https://github.com/junproger/MineSweeper#readme",
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  }
 }
