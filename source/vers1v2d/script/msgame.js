@@ -422,4 +422,5 @@ function startMineSweeper(enums) {
 
 document.addEventListener('DOMContentLoaded', () => {
   startMineSweeper(ENUMS.small);
+  console.log('ПРИВЕТСТВУЮ ТЕБЯ, ПРОВЕРЯЮЩИЙ!\n\rДЛЯ ОБЛЕГЧЕНИЯ ПРОВЕРКИ, ДАННЫЕ ИГРЫ В КОНСОЛИ!');
 });
