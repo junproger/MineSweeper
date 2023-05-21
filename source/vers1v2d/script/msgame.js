@@ -103,9 +103,11 @@ const MINESWEEPER = {
   gameInform() {
     const FLAGS = document.querySelector('.flags');
     const BOMBS = document.querySelector('.bombs');
-    const TOTAL = this.MSGAMEFLAGS.length;
-    BOMBS.firstChild.textContent = `${this.MSGAMEBOMBS.length - TOTAL}`;
-    FLAGS.firstChild.textContent = `${TOTAL}`;
+    const SUMFLAGS = this.MSGAMEFLAGS.length;
+    let LEFTBOMBS = this.MSGAMEBOMBS.length - SUMFLAGS;
+    if (LEFTBOMBS < 0) return;
+    BOMBS.firstChild.textContent = `${LEFTBOMBS}`;
+    FLAGS.firstChild.textContent = `${SUMFLAGS}`;
   },
   gameClicks() {
     const CLICKS = document.querySelector('.clicks');
@@ -264,6 +266,7 @@ const MINESWEEPER = {
   },
   gameRightHandler(event) {
     event.preventDefault();
+    if (!this.MSGAMEBOMBS.length) return;
     if (!event.target.dataset.id) return;
     if (!event.target.closest('.cells')) return;
     if (event.target.classList.contains('open')) return;
@@ -272,22 +275,21 @@ const MINESWEEPER = {
     const FLAGS = this.MSGAMEFLAGS;
     this.GAMECLICKS(1);
     if (!TARGET.classList.contains('mark')) {
-      FLAGS.push(CELLID);
+      const SUMBOMBS = this.MSGAMEBOMBS.length;
+      if ((SUMBOMBS - this.MSGAMEFLAGS.length) <= 0) return;
       TARGET.classList.add('mark');
       TARGET.append('🚩');
-      // eslint-disable-next-line no-console
-      console.log('ADD FLAG ', FLAGS);
+      FLAGS.push(CELLID);
       this.isWinner();
     } else {
       FLAGS.splice(FLAGS.indexOf(CELLID), 1);
       TARGET.classList.remove('mark');
       TARGET.firstChild.remove();
-      // eslint-disable-next-line no-console
-      console.log('DEL FLAG ', FLAGS);
     }
   },
   gameOver() {
   // eslint-disable-next-line no-console
+    console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     console.log('GAME OVER, YOU LOSE!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
@@ -297,6 +299,7 @@ const MINESWEEPER = {
   },
   gameWinner() {
   // eslint-disable-next-line no-console
+    console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     console.log('GAME OVER, YOU WON!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
