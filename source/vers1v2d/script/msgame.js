@@ -58,6 +58,7 @@ const MSGAMECOUNT = () => {
 };
 
 const MINESWEEPER = {
+  MSGAMETIMER: null,
   MSGAMEDATA: null,
   MSGAMESTATE: null,
   MSGAMEBOMBS: [],
@@ -78,6 +79,18 @@ const MINESWEEPER = {
     }
     ROOT.firstChild.remove();
     this.clearRoot(ROOT.firstChild);
+  },
+  runTimer(run) {
+    let seconds = 0;
+    if (run) {
+      this.MSGAMETIMER = setInterval(() => {
+        seconds += 1;
+        const TIMES = document.querySelector('.times');
+        TIMES.firstChild.textContent = `${seconds}`;
+      }, 1000);
+    } else {
+      clearInterval(this.MSGAMETIMER);
+    }
   },
   initialize(enums) {
     this.MSGAMEDATA = enums;
@@ -250,8 +263,9 @@ const MINESWEEPER = {
     const CELLID = +TARGET.dataset.id;
     if (this.GAMECLICKS() === 0) {
       // eslint-disable-next-line no-console
-      console.log(`START❗ ON ${CELLID}`);
+      console.log(`START ⭐ ON CELL ${CELLID}`);
       this.addBombs(CELLID);
+      this.runTimer(true);
     }
     this.GAMECLICKS(1);
     if (this.isBomb(CELLID)) {
@@ -288,10 +302,11 @@ const MINESWEEPER = {
     }
   },
   gameOver() {
-  // eslint-disable-next-line no-console
+    this.runTimer(false);
+    // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     // eslint-disable-next-line no-console
-    console.log('GAME OVER❗ 🤕 YOU LOSE!');
+    console.log('GAME OVER❗ 🤕 YOU LOSE❗');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
     SMILE.firstChild.textContent = '🤕';
@@ -299,10 +314,11 @@ const MINESWEEPER = {
     this.openLeftover();
   },
   gameWinner() {
+    this.runTimer(false);
     // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     // eslint-disable-next-line no-console
-    console.log('GAME OVER❗ 🤩 YOU WON!');
+    console.log('GAME OVER❗ 🤩 YOU WON❗');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
     SMILE.firstChild.textContent = '🤩';
