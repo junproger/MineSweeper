@@ -60,15 +60,30 @@ const MSGAMECOUNT = () => {
 const MINESWEEPER = {
   MSGAMEDATA: null,
   MSGAMESTATE: null,
-  MSGAMEROOT: null,
   MSGAMEBOMBS: [],
   MSGAMEFLAGS: [],
+  MSGAMESTORE: null,
   MSGAMESCORE: [],
   GAMECLICKS: MSGAMECOUNT(),
   OPENEDCELLS: MSGAMECOUNT(),
+  constReset() {
+    this.GAMECLICKS = MSGAMECOUNT();
+    this.OPENEDCELLS = MSGAMECOUNT();
+    this.MSGAMEBOMBS = [];
+    this.MSGAMEFLAGS = [];
+  },
+  clearRoot(ROOT) {
+    if (ROOT.childElementCount === 1) {
+      return;
+    }
+    ROOT.firstChild.remove();
+    this.clearRoot(ROOT.firstChild);
+  },
   initialize(enums) {
     this.MSGAMEDATA = enums;
-    this.MSGAMEROOT = document.body;
+    this.constReset();
+    this.MSROOT = document.body;
+    this.clearRoot(this.MSROOT);
     this.TYPEUI = enums.type;
     this.SIZEUI = enums.size;
     this.GRIDMS = enums.grid;
@@ -147,7 +162,7 @@ const MINESWEEPER = {
     const SIDE = document.getElementById('side');
     MAIN.addEventListener('click', (event) => this.mainLeftHandler(event));
     MAIN.addEventListener('contextmenu', (event) => this.mainRightHandler(event));
-    HEAD.addEventListener('click', this.headHandler);
+    HEAD.addEventListener('click', (event) => this.headHandler(event));
     MENU.addEventListener('click', (event) => this.menuHandler(event, HEAD, MENU, GAME, SIDE));
     GAME.addEventListener('click', (event) => this.gameLeftHandler(event));
     GAME.addEventListener('contextmenu', (event) => this.gameRightHandler(event));
@@ -165,6 +180,12 @@ const MINESWEEPER = {
     const TARGET = event.target;
     if (TARGET.closest('#game')) {
       this.addToState();
+    }
+  },
+  headHandler(event) {
+    const TARGET = event.target;
+    if (TARGET.closest('.status')) {
+      this.initialize(this.MSGAMEDATA);
     }
   },
   menuHandler(event, HEAD, MENU, GAME, SIDE) {
