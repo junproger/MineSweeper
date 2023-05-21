@@ -116,6 +116,7 @@ const MINESWEEPER = {
         BOMBS -= 1;
       }
     }
+    // eslint-disable-next-line no-console
     console.log('ADD BOMBS ', this.MSGAMEBOMBS);
   },
   renderUI(TYPEUI) {
@@ -225,11 +226,14 @@ const MINESWEEPER = {
     const TARGET = event.target;
     const CELLID = +TARGET.dataset.id;
     if (this.GAMECLICKS() === 0) {
+      // eslint-disable-next-line no-console
       console.log(`START ON ${CELLID}`);
       this.addBombs(CELLID);
     }
+    // eslint-disable-next-line no-console
     console.log('CLICK ', this.GAMECLICKS(1));
     if (this.isBomb(CELLID)) {
+      // eslint-disable-next-line no-console
       console.log(`BOOM! ON ${CELLID}`);
       TARGET.classList.add('open');
       TARGET.append('💥');
@@ -250,16 +254,19 @@ const MINESWEEPER = {
       FLAGS.push(CELLID);
       TARGET.classList.add('mark');
       TARGET.append('🚩');
+      // eslint-disable-next-line no-console
       console.log('ADD FLAG ', FLAGS);
       this.isWinner();
     } else {
       FLAGS.splice(FLAGS.indexOf(CELLID), 1);
       TARGET.classList.remove('mark');
       TARGET.firstChild.remove();
+      // eslint-disable-next-line no-console
       console.log('DEL FLAG ', FLAGS);
     }
   },
   gameOver() {
+  // eslint-disable-next-line no-console
     console.log('GAME OVER, YOU LOSE!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
@@ -270,6 +277,7 @@ const MINESWEEPER = {
     this.openLeftover();
   },
   gameWinner() {
+  // eslint-disable-next-line no-console
     console.log('GAME OVER, YOU WON!');
     const SMILE = document.getElementById('smile');
     const TEXT = document.getElementById('text');
@@ -283,8 +291,8 @@ const MINESWEEPER = {
     const MINES = this.MSGAMEDATA.bombs;
     const BOMBS = this.MSGAMEBOMBS;
     const FLAGS = this.MSGAMEFLAGS;
-    if ((this.OPENEDCELLS() === (CELLS - MINES)) &&
-      BOMBS.every((elm) => FLAGS.includes(elm))) this.gameWinner();
+    if ((this.OPENEDCELLS() === (CELLS - MINES))
+      && BOMBS.every((elm) => FLAGS.includes(elm))) this.gameWinner();
   },
   openLeftover() {
     const GAME = document.getElementById('game');
@@ -317,7 +325,7 @@ const MINESWEEPER = {
     }
   },
   openingCell(arrowcol) {
-    const [ ROW, COL ] = arrowcol;
+    const [ROW, COL] = arrowcol;
     const PARENT = document.getElementById('game');
     const TARGET = PARENT.children[ROW].children[COL];
     if (TARGET.classList.contains('open')) return;
@@ -418,9 +426,10 @@ const MINESWEEPER = {
 
 function startMineSweeper(enums) {
   MINESWEEPER.initialize(enums);
-};
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   startMineSweeper(ENUMS.small);
+  // eslint-disable-next-line no-console
   console.log('ПРИВЕТСТВУЮ ТЕБЯ, ПРОВЕРЯЮЩИЙ!\n\rДЛЯ ОБЛЕГЧЕНИЯ ПРОВЕРКИ, ДАННЫЕ ИГРЫ В КОНСОЛИ!');
 });
