@@ -19,8 +19,8 @@ body {
   border-color: black;
   background-color: silver;
   box-sizing: border-box;
-  line-height: 20px;
-  font-size: 18px;
+  line-height: 22px;
+  font-size: 20px;
   padding: 0;
   margin: 0;
 }
@@ -31,8 +31,8 @@ body,
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  line-height: 20px;
-  font-size: 18px;
+  line-height: 22px;
+  font-size: 20px;
   padding: 0;
   margin: 0;
 }
@@ -117,8 +117,9 @@ main,
   justify-content: flex-start;
   background-color: darkgray;
   border: 1px solid gray;
-  line-height: 0.8rem;
-  font-size: 0.75rem;
+  line-height: 0.9rem;
+  font-size: 0.8rem;
+  padding-top: 1rem;
   color: black;
 }
 .field {
@@ -148,8 +149,6 @@ main,
   flex: 1 1 auto;
   display: grid;
   gap: 1px;
-  line-height: 0.8rem;
-  font-size: 0.75rem;
   padding: 0;
   margin: 0;
 }
@@ -229,20 +228,20 @@ main,
   background-color: lightgray;
 }
 .mini {
+  line-height: 24px;
+  font-size: 22px;
+}
+.small {
   line-height: 22px;
   font-size: 20px;
 }
-.small {
+.medium {
   line-height: 20px;
   font-size: 18px;
 }
-.medium {
+.large {
   line-height: 18px;
   font-size: 16px;
-}
-.large {
-  line-height: 16px;
-  font-size: 14px;
 }
 .order1 {
   order: 1;
@@ -285,8 +284,8 @@ main,
 .darkred {
   color: darkred;
 }
-.cyan {
-  color: cyan;
+.orange {
+  color: orangered;
 }
 .black {
   color: black;
@@ -295,7 +294,20 @@ main,
   color: grey;
 }
 
-@media (max-width: 2400px) {
+@media (max-width: 1400px) {
+  html,
+  body,
+  .root {
+    line-height: 22px;
+    font-size: 20px;
+  }
+  .game {
+    line-height: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 900px) {
   html,
   body,
   .root {
@@ -308,20 +320,7 @@ main,
   }
 }
 
-@media (max-width: 1200) {
-  html,
-  body,
-  .root {
-    line-height: 18px;
-    font-size: 16px;
-  }
-  .game {
-    line-height: 0.75rem;
-    font-size: 0.6rem;
-  }
-}
-
-@media (max-width: 600) {
+@media (max-width: 600px) {
   html,
   body,
   .root {
@@ -343,7 +342,8 @@ main,
     border-width: 0.5px;
   }
 }
-@media (max-width: 400) {
+
+@media (max-width: 400px) {
   html,
   body,
   .root {
