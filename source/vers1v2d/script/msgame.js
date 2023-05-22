@@ -171,9 +171,17 @@ const MINESWEEPER = {
       <div class="togglerL" id="toggler"></div>
     </nav>
     <div class="game order3" id="game"></div>
-    <div class="side order4" id="side"></div>`;
+    <div class="side order4" id="side">
+      <div class="field">SIZE
+        <label class="label hide"><input type="radio" name="size" value="mini">x5</label>
+        <label class="label"><input type="radio" name="size" value="small">x10</label>
+        <label class="label"><input type="radio" name="size" value="medium">x15</label>
+        <label class="label"><input type="radio" name="size" value="large">x25</label>
+      </div>
+    </div>`;
   },
   renderMS(SIZEUI, TEMPMS) {
+    this.checkField();
     const ROWS = 'div';
     const CELL = 'div';
     const SIZE = SIZEUI;
@@ -186,6 +194,14 @@ const MINESWEEPER = {
         GAME.lastChild.append(document.createElement(CELL));
         GAME.lastChild.lastChild.classList.add('cells');
         GAME.lastChild.lastChild.setAttribute('data-id', `${i * SIZEUI + j}`);
+      }
+    }
+  },
+  checkField() {
+    const CHOOSE = document.querySelectorAll('.label');
+    for (let i = 0; i < CHOOSE.length; i += 1) {
+      if (CHOOSE[i].firstChild.value === this.MSGAMEDATA.type) {
+        CHOOSE[i].firstChild.checked = true;
       }
     }
   },
@@ -210,6 +226,11 @@ const MINESWEEPER = {
       this.addToState();
       this.gameInform();
       this.gameClicks();
+    }
+    if (TARGET.closest('.field')) {
+      const CHECK = TARGET.closest('.label');
+      CHECK.firstChild.checked = true;
+      this.initialize(ENUMS[CHECK.firstChild.value]);
     }
   },
   mainRightHandler(event) {
