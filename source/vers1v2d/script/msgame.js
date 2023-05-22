@@ -10,6 +10,7 @@ const ENUMS = {
       rows: 'rows5',
       cols: 'cols5',
     },
+    menu: 'togglerL',
   },
   small: {
     type: 'small',
@@ -22,6 +23,7 @@ const ENUMS = {
       rows: 'rows10',
       cols: 'cols10',
     },
+    menu: 'togglerL',
   },
   medium: {
     type: 'medium',
@@ -34,6 +36,7 @@ const ENUMS = {
       rows: 'rows15',
       cols: 'cols15',
     },
+    menu: 'togglerL',
   },
   large: {
     type: 'large',
@@ -46,6 +49,7 @@ const ENUMS = {
       rows: 'rows25',
       cols: 'cols25',
     },
+    menu: 'togglerL',
   },
 };
 
@@ -59,8 +63,9 @@ const MSGAMECOUNT = () => {
 
 const MINESWEEPER = {
   MSGAMETIMER: null,
+  MSGAMETIMES: 0,
   MSGAMEDATA: null,
-  MSGAMESTATE: null,
+  MSGAMESTATE: {},
   MSGAMEBOMBS: [],
   MSGAMEFLAGS: [],
   MSGAMESTORE: null,
@@ -86,8 +91,9 @@ const MINESWEEPER = {
     if (run) {
       this.MSGAMETIMER = setInterval(() => {
         seconds += 1;
+        this.MSGAMETIMES = seconds;
         const TIMES = document.querySelector('.times');
-        TIMES.firstChild.textContent = `${seconds}`;
+        TIMES.firstChild.textContent = `${this.MSGAMETIMES}`;
       }, 1000);
     } else {
       clearInterval(this.MSGAMETIMER);
@@ -105,15 +111,32 @@ const MINESWEEPER = {
     this.TEMPMS = enums.temp;
     this.renderUI(this.TYPEUI);
     this.renderMS(this.SIZEUI, this.TEMPMS);
+    this.addToState(this.MSROOT.innerHTML);
     this.addListeners();
   },
-  addToState() {
-    this.MSGAMESTATE = document.getElementById('main');
+  addToState(INNER) {
+    this.MSGAMESTATE.type = this.MSGAMEDATA.type;
+    this.MSGAMESTATE.data = this.MSGAMEDATA;
+    this.MSGAMESTATE.main = INNER;
+    this.loadtoLocalStorage();
     return this.MSGAMESTATE;
   },
   getFromState() {
     const STATE = this.MSGAMESTATE;
     return STATE;
+  },
+  loadtoLocalStorage() {
+    localStorage.setItem('junpr#7638markMSGame', 'true');
+    localStorage.setItem('junpr#7638typeMSGame', `${this.MSGAMEDATA.type}`);
+  },
+  loadfromLocalStorage() {
+    const MARK = localStorage.getItem('junpr#7638markMSGame');
+    if (MARK) {
+      const TYPE = localStorage.getItem('junpr#7638typeMSGame');
+      MINESWEEPER.initialize(ENUMS[TYPE]);
+    } else {
+      MINESWEEPER.initialize(ENUMS.small);
+    }
   },
   gameInform() {
     const FLAGS = document.querySelector('.flags');
@@ -222,8 +245,9 @@ const MINESWEEPER = {
   mainLeftHandler(event) {
     event.preventDefault();
     const TARGET = event.target;
+    const ROOT = document.body;
     if (TARGET.closest('#main')) {
-      this.addToState();
+      this.addToState(ROOT.innerHTML);
       this.gameInform();
       this.gameClicks();
     }
@@ -236,8 +260,9 @@ const MINESWEEPER = {
   mainRightHandler(event) {
     event.preventDefault();
     const TARGET = event.target;
+    const ROOT = document.body;
     if (TARGET.closest('#game')) {
-      this.addToState();
+      this.addToState(ROOT.innerHTML);
       this.gameInform();
       this.gameClicks();
     }
@@ -486,12 +511,12 @@ const MINESWEEPER = {
 
 };
 
-function startMineSweeper(enums) {
-  MINESWEEPER.initialize(enums);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  startMineSweeper(ENUMS.small);
+  if (localStorage.getItem('junpr#7638markMSGame')) {
+    MINESWEEPER.loadfromLocalStorage();
+  } else {
+    MINESWEEPER.initialize(ENUMS.small);
+  }
   // eslint-disable-next-line no-console
   console.log('ПРИВЕТСТВУЮ ТЕБЯ, ПРОВЕРЯЮЩИЙ!\n\rДЛЯ ОБЛЕГЧЕНИЯ ПРОВЕРКИ, ДАННЫЕ ИГРЫ В КОНСОЛИ!');
 });
