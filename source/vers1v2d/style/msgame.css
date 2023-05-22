@@ -107,39 +107,6 @@ main,
   border: 2px solid gray;
   padding: 2px;
 }
-.togglerL {
-  width: 99%;
-  height: 99%;
-  border-left: 9px solid;
-  border-top: 9px solid;
-  border-color: gray;
-}
-.togglerR {
-  width: 99%;
-  height: 99%;
-  border-top: 9px solid;
-  border-right: 9px solid;
-  border-color: gray;
-}
-.togglerL:hover,
-.togglerR:hover {
-  cursor: pointer;
-  border-color: whitesmoke;
-}
-.togglerL:active {
-  cursor: pointer;
-  border-left: none;
-  border-top: 9px solid;
-  border-right: 9px solid;
-  border-color: whitesmoke;
-}
-.togglerR:active {
-  cursor: pointer;
-  border-left: 9px solid;
-  border-top: 9px solid;
-  border-right: none;
-  border-color: whitesmoke;
-}
 .side {
   width: 8%;
   height: 91%;

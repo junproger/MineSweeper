@@ -231,13 +231,11 @@ const MINESWEEPER = {
   addListeners() {
     const MAIN = document.getElementById('main');
     const HEAD = document.getElementById('head');
-    const MENU = document.getElementById('menu');
     const GAME = document.getElementById('game');
     const SIDE = document.getElementById('side');
     MAIN.addEventListener('click', (event) => this.mainLeftHandler(event));
     MAIN.addEventListener('contextmenu', (event) => this.mainRightHandler(event));
     HEAD.addEventListener('click', (event) => this.headHandler(event));
-    MENU.addEventListener('click', (event) => this.menuHandler(event, HEAD, MENU, GAME, SIDE));
     GAME.addEventListener('click', (event) => this.gameLeftHandler(event));
     GAME.addEventListener('contextmenu', (event) => this.gameRightHandler(event));
     SIDE.addEventListener('click', this.sideHandler);
@@ -272,34 +270,6 @@ const MINESWEEPER = {
     if (TARGET.closest('.status')) {
       this.runTimer(false);
       this.initialize(this.MSGAMEDATA);
-    }
-  },
-  menuHandler(event, HEAD, MENU, GAME, SIDE) {
-    event.preventDefault();
-    if (event.target.id === 'toggler') {
-      if (event.target.classList.contains('togglerL')) {
-        event.target.classList.remove('togglerL');
-        event.target.classList.add('togglerR');
-        HEAD.classList.remove('order1');
-        MENU.classList.remove('order2');
-        GAME.classList.remove('order3');
-        SIDE.classList.remove('order4');
-        MENU.classList.add('order1');
-        HEAD.classList.add('order2');
-        SIDE.classList.add('order3');
-        GAME.classList.add('order4');
-      } else {
-        event.target.classList.remove('togglerR');
-        event.target.classList.add('togglerL');
-        MENU.classList.remove('order1');
-        HEAD.classList.remove('order2');
-        SIDE.classList.remove('order3');
-        GAME.classList.remove('order4');
-        HEAD.classList.add('order1');
-        MENU.classList.add('order2');
-        GAME.classList.add('order3');
-        SIDE.classList.add('order4');
-      }
     }
   },
   gameLeftHandler(event) {
