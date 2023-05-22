@@ -61,7 +61,8 @@ main,
   justify-content: space-between;
   align-items: center;
   background-color: darkgray;
-  line-height: 100%;
+  line-height: 1rem;
+  font-size: 0.9rem;
 }
 .headers {
   width: 33%;
@@ -294,7 +295,7 @@ main,
   color: grey;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 980px) {
   html,
   body,
   .root {
@@ -307,29 +308,16 @@ main,
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   html,
   body,
   .root {
-    line-height: 20px;
-    font-size: 18px;
+    line-height: 22px;
+    font-size: 20px;
   }
   .game {
     line-height: 0.8rem;
     font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 600px) {
-  html,
-  body,
-  .root {
-    line-height: 16px;
-    font-size: 14px;
-  }
-  .game {
-    line-height: 0.6rem;
-    font-size: 0.5rem;
     gap: 0.5px;
   }
   .cols5,
@@ -343,12 +331,12 @@ main,
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width:520px) {
   html,
   body,
   .root {
-    line-height: 14px;
-    font-size: 12px;
+    line-height: 16px;
+    font-size: 14px;
   }
   .game {
     line-height: 0.5rem;
