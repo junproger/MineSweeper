@@ -72,6 +72,7 @@ const MINESWEEPER = {
     mstempl: null,
     arrbombs: [],
     arrflags: [],
+    gameover: false,
     msmain: '',
   },
   MSGAMEBOMBS: [],
@@ -80,10 +81,13 @@ const MINESWEEPER = {
   OPENEDCELLS: MSGAMECOUNT(),
   constReset() {
     this.runTimer(false);
+    this.MSSTATE.mstimes = 0;
+    this.MSSTATE.gameover = false;
     this.GAMECLICKS = MSGAMECOUNT();
     this.OPENEDCELLS = MSGAMECOUNT();
     this.MSGAMEBOMBS = [];
     this.MSGAMEFLAGS = [];
+    localStorage.clear();
   },
   clearRoot(ROOT) {
     if (ROOT.childElementCount === 1) {
@@ -93,11 +97,9 @@ const MINESWEEPER = {
     this.clearRoot(ROOT.firstChild);
   },
   runTimer(run) {
-    let seconds = 0;
     if (run) {
       this.MSTIMER = setInterval(() => {
-        seconds += 1;
-        this.MSSTATE.mstimes = seconds;
+        this.MSSTATE.mstimes += 1;
         const TIMES = document.querySelector('.times');
         TIMES.firstChild.textContent = `${this.MSSTATE.mstimes}`;
       }, 1000);
@@ -138,16 +140,24 @@ const MINESWEEPER = {
   },
   savetoLocalStorage() {
     localStorage.setItem('junpr#7638markMSGame', 'true');
-    localStorage.setItem('junpr#7638typeMSGame', `${this.MSSTATE.mstype}`);
-    localStorage.setItem('junpr#7638dataMSGame', `${JSON.stringify(this.MSSTATE.msdata)}`);
-    localStorage.setItem('junpr#7638mainMSGame', `${this.MSSTATE.msmain}`);
     localStorage.setItem('junpr#7638stateMSGame', `${JSON.stringify(this.MSSTATE)}`);
   },
   loadfromLocalStorage() {
     const MARK = localStorage.getItem('junpr#7638markMSGame');
     if (MARK) {
-      const TYPE = localStorage.getItem('junpr#7638typeMSGame');
-      MINESWEEPER.initialize(ENUMS[TYPE]);
+      const STATE = JSON.parse(localStorage.getItem('junpr#7638stateMSGame'));
+      this.MSSTATE = STATE;
+      this.GAMECLICKS(this.MSSTATE.msclicks);
+      this.OPENEDCELLS(this.MSSTATE.msopens);
+      this.MSGAMEBOMBS = [...this.MSSTATE.arrbombs];
+      this.MSGAMEFLAGS = [...this.MSSTATE.arrflags];
+      document.body.innerHTML = `${this.MSSTATE.msmain}`;
+      this.checkField();
+      this.gameInform();
+      this.gameClicks();
+      this.addListeners();
+      if (this.MSSTATE.gameover) return;
+      this.runTimer(true);
     } else {
       MINESWEEPER.initialize(ENUMS.small);
     }
@@ -258,7 +268,7 @@ const MINESWEEPER = {
     event.preventDefault();
     const TARGET = event.target;
     const ROOT = document.body;
-    if (TARGET.closest('#main')) {
+    if (TARGET.closest('#game')) {
       this.addToState(ROOT.innerHTML);
       this.gameInform();
       this.gameClicks();
@@ -266,6 +276,8 @@ const MINESWEEPER = {
     if (TARGET.closest('.field')) {
       const CHECK = TARGET.closest('.label');
       CHECK.firstChild.checked = true;
+      this.runTimer(false);
+      localStorage.clear();
       this.initialize(ENUMS[CHECK.firstChild.value]);
     }
   },
@@ -283,6 +295,7 @@ const MINESWEEPER = {
     const TARGET = event.target;
     if (TARGET.closest('.status')) {
       this.runTimer(false);
+      localStorage.clear();
       this.initialize(this.MSSTATE.msdata);
     }
   },
@@ -336,6 +349,7 @@ const MINESWEEPER = {
   },
   gameOver() {
     this.runTimer(false);
+    this.MSSTATE.gameover = true;
     // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     // eslint-disable-next-line no-console
@@ -344,10 +358,12 @@ const MINESWEEPER = {
     const TEXT = document.getElementById('text');
     SMILE.firstChild.textContent = '🤕';
     TEXT.firstChild.textContent = 'YOU LOSE!';
+    this.addToState(document.body.innerHTML);
     this.openLeftover();
   },
   gameWinner() {
     this.runTimer(false);
+    this.MSSTATE.gameover = true;
     // eslint-disable-next-line no-console
     console.log('YOUR FLAGS ', this.MSGAMEFLAGS);
     // eslint-disable-next-line no-console
@@ -356,6 +372,7 @@ const MINESWEEPER = {
     const TEXT = document.getElementById('text');
     SMILE.firstChild.textContent = '🤩';
     TEXT.firstChild.textContent = 'YOU WON!';
+    this.addToState(document.body.innerHTML);
   },
   isWinner() {
     const CELLS = this.MSSTATE.mscells;
