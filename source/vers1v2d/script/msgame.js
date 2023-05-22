@@ -68,6 +68,7 @@ const MINESWEEPER = {
   GAMECLICKS: MSGAMECOUNT(),
   OPENEDCELLS: MSGAMECOUNT(),
   constReset() {
+    this.runTimer(false);
     this.GAMECLICKS = MSGAMECOUNT();
     this.OPENEDCELLS = MSGAMECOUNT();
     this.MSGAMEBOMBS = [];
@@ -93,6 +94,7 @@ const MINESWEEPER = {
     }
   },
   initialize(enums) {
+    this.runTimer(false);
     this.MSGAMEDATA = enums;
     this.constReset();
     this.MSROOT = document.body;
@@ -222,6 +224,7 @@ const MINESWEEPER = {
   headHandler(event) {
     const TARGET = event.target;
     if (TARGET.closest('.status')) {
+      this.runTimer(false);
       this.initialize(this.MSGAMEDATA);
     }
   },
