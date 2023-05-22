@@ -6,11 +6,10 @@ const ENUMS = {
     cells: 25,
     bombs: 5,
     grid: 'grid5',
-    temp: {
+    templ: {
       rows: 'rows5',
       cols: 'cols5',
     },
-    menu: 'togglerL',
   },
   small: {
     type: 'small',
@@ -19,11 +18,10 @@ const ENUMS = {
     cells: 100,
     bombs: 10,
     grid: 'grid10',
-    temp: {
+    templ: {
       rows: 'rows10',
       cols: 'cols10',
     },
-    menu: 'togglerL',
   },
   medium: {
     type: 'medium',
@@ -32,11 +30,10 @@ const ENUMS = {
     cells: 225,
     bombs: 30,
     grid: 'grid15',
-    temp: {
+    templ: {
       rows: 'rows15',
       cols: 'cols15',
     },
-    menu: 'togglerL',
   },
   large: {
     type: 'large',
@@ -45,11 +42,10 @@ const ENUMS = {
     cells: 625,
     bombs: 100,
     grid: 'grid25',
-    temp: {
+    templ: {
       rows: 'rows25',
       cols: 'cols25',
     },
-    menu: 'togglerL',
   },
 };
 
@@ -62,14 +58,24 @@ const MSGAMECOUNT = () => {
 };
 
 const MINESWEEPER = {
-  MSGAMETIMER: null,
-  MSGAMETIMES: 0,
-  MSGAMEDATA: null,
-  MSGAMESTATE: {},
+  MSTIMER: null,
+  MSSTATE: {
+    mstimes: 0,
+    msclicks: 0,
+    msopens: 0,
+    msroot: null,
+    msdata: null,
+    mstype: null,
+    mssize: 0,
+    mscells: 0,
+    msbombs: 0,
+    mstempl: null,
+    arrbombs: [],
+    arrflags: [],
+    msmain: '',
+  },
   MSGAMEBOMBS: [],
   MSGAMEFLAGS: [],
-  MSGAMESTORE: null,
-  MSGAMESCORE: [],
   GAMECLICKS: MSGAMECOUNT(),
   OPENEDCELLS: MSGAMECOUNT(),
   constReset() {
@@ -89,45 +95,50 @@ const MINESWEEPER = {
   runTimer(run) {
     let seconds = 0;
     if (run) {
-      this.MSGAMETIMER = setInterval(() => {
+      this.MSTIMER = setInterval(() => {
         seconds += 1;
-        this.MSGAMETIMES = seconds;
+        this.MSSTATE.mstimes = seconds;
         const TIMES = document.querySelector('.times');
-        TIMES.firstChild.textContent = `${this.MSGAMETIMES}`;
+        TIMES.firstChild.textContent = `${this.MSSTATE.mstimes}`;
       }, 1000);
     } else {
-      clearInterval(this.MSGAMETIMER);
+      clearInterval(this.MSTIMER);
     }
   },
   initialize(enums) {
-    this.runTimer(false);
-    this.MSGAMEDATA = enums;
     this.constReset();
+    this.runTimer(false);
     this.MSROOT = document.body;
     this.clearRoot(this.MSROOT);
-    this.TYPEUI = enums.type;
-    this.SIZEUI = enums.size;
-    this.GRIDMS = enums.grid;
-    this.TEMPMS = enums.temp;
-    this.renderUI(this.TYPEUI);
-    this.renderMS(this.SIZEUI, this.TEMPMS);
+    this.MSSTATE.msdata = enums;
+    this.MSSTATE.mstype = enums.type;
+    this.MSSTATE.mssize = enums.size;
+    this.MSSTATE.mscells = enums.cells;
+    this.MSSTATE.msbombs = enums.bombs;
+    this.MSSTATE.mstempl = enums.templ;
+    this.MSSTATE.msroot = document.body;
+    this.renderUI(this.MSSTATE.mstype);
+    this.renderMS(this.MSSTATE.mssize, this.MSSTATE.mstempl);
     this.addToState(this.MSROOT.innerHTML);
     this.addListeners();
   },
   addToState(INNER) {
-    this.MSGAMESTATE.type = this.MSGAMEDATA.type;
-    this.MSGAMESTATE.data = this.MSGAMEDATA;
-    this.MSGAMESTATE.main = INNER;
+    this.MSSTATE.msclicks = this.GAMECLICKS();
+    this.MSSTATE.msopens = this.OPENEDCELLS();
+    this.MSSTATE.arrbombs = [...this.MSGAMEBOMBS];
+    this.MSSTATE.arrflags = [...this.MSGAMEFLAGS];
+    this.MSSTATE.msmain = INNER;
     this.loadtoLocalStorage();
-    return this.MSGAMESTATE;
+    return this.MSSTATE;
   },
-  getFromState() {
-    const STATE = this.MSGAMESTATE;
+  getFromState(key) {
+    const STATE = this.MSSTATE;
+    if (key) return STATE[key];
     return STATE;
   },
   loadtoLocalStorage() {
     localStorage.setItem('junpr#7638markMSGame', 'true');
-    localStorage.setItem('junpr#7638typeMSGame', `${this.MSGAMEDATA.type}`);
+    localStorage.setItem('junpr#7638typeMSGame', `${this.MSSTATE.mstype}`);
   },
   loadfromLocalStorage() {
     const MARK = localStorage.getItem('junpr#7638markMSGame');
@@ -141,25 +152,25 @@ const MINESWEEPER = {
   gameInform() {
     const FLAGS = document.querySelector('.flags');
     const BOMBS = document.querySelector('.bombs');
-    const SUMFLAGS = this.MSGAMEFLAGS.length;
-    const LEFTBOMBS = this.MSGAMEBOMBS.length - SUMFLAGS;
+    const SUMFLAGS = this.MSSTATE.arrflags.length;
+    const LEFTBOMBS = this.MSSTATE.arrbombs.length - SUMFLAGS;
     if (LEFTBOMBS < 0) return;
     BOMBS.firstChild.textContent = `${LEFTBOMBS}`;
     FLAGS.firstChild.textContent = `${SUMFLAGS}`;
   },
   gameClicks() {
     const CLICKS = document.querySelector('.clicks');
-    CLICKS.firstChild.textContent = `${this.GAMECLICKS()}`;
+    CLICKS.firstChild.textContent = `${this.MSSTATE.msclicks}`;
   },
   getCoordinate(CELLID) {
-    const SIZEUI = this.MSGAMEDATA.size;
+    const SIZEUI = this.MSSTATE.mssize;
     const ROW = Math.trunc(CELLID / SIZEUI);
     const COL = CELLID % SIZEUI;
     return [ROW, COL];
   },
   addBombs(CELLID) {
-    const CELLS = this.MSGAMEDATA.cells;
-    let BOMBS = this.MSGAMEDATA.bombs;
+    const CELLS = this.MSSTATE.mscells;
+    let BOMBS = this.MSSTATE.msbombs;
     while (BOMBS) {
       const RANDOM = Math.floor(Math.random(CELLS) * CELLS);
       if (RANDOM !== CELLID && !this.MSGAMEBOMBS.includes(RANDOM)) {
@@ -170,12 +181,12 @@ const MINESWEEPER = {
     // eslint-disable-next-line no-console
     console.log('ADD BOMBS ', this.MSGAMEBOMBS);
   },
-  renderUI(TYPEUI) {
+  renderUI(MSTYPE) {
     const ROOT = document.body;
     ROOT.classList.add('root');
     ROOT.innerHTML = '<main class="main viewmin" id="main"></main>';
     const MAIN = document.getElementById('main');
-    MAIN.classList.add(`${TYPEUI}`);
+    MAIN.classList.add(`${MSTYPE}`);
     MAIN.innerHTML = `<div class="head order1" id="head">
       <div class="headers inform" id="inform">
         <div class="flags"><span>0</span><span>🚩</span></div>
@@ -203,27 +214,27 @@ const MINESWEEPER = {
       </div>
     </div>`;
   },
-  renderMS(SIZEUI, TEMPMS) {
+  renderMS(MSSIZE, MSTYPE) {
     this.checkField();
     const ROWS = 'div';
     const CELL = 'div';
-    const SIZE = SIZEUI;
+    const SIZE = MSSIZE;
     const GAME = document.getElementById('game');
-    GAME.classList.add(`${TEMPMS.rows}`);
+    GAME.classList.add(`${MSTYPE.rows}`);
     for (let i = 0; i < SIZE; i += 1) {
       GAME.append(document.createElement(ROWS));
-      GAME.lastChild.classList.add(`${TEMPMS.cols}`);
+      GAME.lastChild.classList.add(`${MSTYPE.cols}`);
       for (let j = 0; j < SIZE; j += 1) {
         GAME.lastChild.append(document.createElement(CELL));
         GAME.lastChild.lastChild.classList.add('cells');
-        GAME.lastChild.lastChild.setAttribute('data-id', `${i * SIZEUI + j}`);
+        GAME.lastChild.lastChild.setAttribute('data-id', `${i * MSSIZE + j}`);
       }
     }
   },
   checkField() {
     const CHOOSE = document.querySelectorAll('.label');
     for (let i = 0; i < CHOOSE.length; i += 1) {
-      if (CHOOSE[i].firstChild.value === this.MSGAMEDATA.type) {
+      if (CHOOSE[i].firstChild.value === this.MSSTATE.mstype) {
         CHOOSE[i].firstChild.checked = true;
       }
     }
@@ -269,7 +280,7 @@ const MINESWEEPER = {
     const TARGET = event.target;
     if (TARGET.closest('.status')) {
       this.runTimer(false);
-      this.initialize(this.MSGAMEDATA);
+      this.initialize(this.MSSTATE.msdata);
     }
   },
   gameLeftHandler(event) {
@@ -280,7 +291,7 @@ const MINESWEEPER = {
     if (event.target.classList.contains('open')) return;
     const TARGET = event.target;
     const CELLID = +TARGET.dataset.id;
-    if (this.GAMECLICKS() === 0) {
+    if (this.MSSTATE.msclicks === 0) {
       // eslint-disable-next-line no-console
       console.log(`START ⭐ ON CELL ${CELLID}`);
       this.addBombs(CELLID);
@@ -344,8 +355,8 @@ const MINESWEEPER = {
     TEXT.firstChild.textContent = 'YOU WON!';
   },
   isWinner() {
-    const CELLS = this.MSGAMEDATA.cells;
-    const MINES = this.MSGAMEDATA.bombs;
+    const CELLS = this.MSSTATE.mscells;
+    const MINES = this.MSSTATE.msbombs;
     const BOMBS = this.MSGAMEBOMBS;
     const FLAGS = this.MSGAMEFLAGS;
     if ((this.OPENEDCELLS() === (CELLS - MINES))
@@ -407,7 +418,7 @@ const MINESWEEPER = {
   isValid(NROW, NCOL) {
     let nrowtrue = false;
     let ncoltrue = false;
-    const SIZEUI = this.MSGAMEDATA.size - 1;
+    const SIZEUI = this.MSSTATE.mssize - 1;
     if (NROW >= 0 && NROW <= SIZEUI) nrowtrue = true;
     if (NCOL >= 0 && NCOL <= SIZEUI) ncoltrue = true;
     return (nrowtrue && ncoltrue);
@@ -462,7 +473,7 @@ const MINESWEEPER = {
         break;
       }
       case (6): {
-        TARGET.classList.add('cyan');
+        TARGET.classList.add('orange');
         break;
       }
       case (7): {
