@@ -128,7 +128,7 @@ const MINESWEEPER = {
     this.MSSTATE.arrbombs = [...this.MSGAMEBOMBS];
     this.MSSTATE.arrflags = [...this.MSGAMEFLAGS];
     this.MSSTATE.msmain = INNER;
-    this.loadtoLocalStorage();
+    this.savetoLocalStorage();
     return this.MSSTATE;
   },
   getFromState(key) {
@@ -136,9 +136,12 @@ const MINESWEEPER = {
     if (key) return STATE[key];
     return STATE;
   },
-  loadtoLocalStorage() {
+  savetoLocalStorage() {
     localStorage.setItem('junpr#7638markMSGame', 'true');
     localStorage.setItem('junpr#7638typeMSGame', `${this.MSSTATE.mstype}`);
+    localStorage.setItem('junpr#7638dataMSGame', `${JSON.stringify(this.MSSTATE.msdata)}`);
+    localStorage.setItem('junpr#7638mainMSGame', `${this.MSSTATE.msmain}`);
+    localStorage.setItem('junpr#7638stateMSGame', `${JSON.stringify(this.MSSTATE)}`);
   },
   loadfromLocalStorage() {
     const MARK = localStorage.getItem('junpr#7638markMSGame');
