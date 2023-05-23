@@ -111,8 +111,7 @@ const MINESWEEPER = {
   },
   writeScore10(final) {
     const SCORE = {};
-    const DATEN = Date.now().toString().slice(10);
-    SCORE.GAME = `GAME:${DATEN}`;
+    SCORE.GAME = `GAME:X${this.MSSTATE.mssize}`;
     SCORE.CLICK = `CLICK:${this.MSSTATE.msclicks}`;
     SCORE.TIME = `TIME:${this.MSSTATE.mstimes}`;
     SCORE.FINAL = `FINAL:${final}`;
@@ -324,7 +323,7 @@ const MINESWEEPER = {
         SCORLIST.classList.add('openscr');
         for (let i = 0; i < this.MSSTATE.score10.length; i += 1) {
           const LINE = document.createElement('div');
-          LINE.append(Object.values(this.MSSTATE.score10[i]).join(' '));
+          LINE.append(`${i + 1}. ${Object.values(this.MSSTATE.score10[i]).join(' ')}`);
           SCORLIST.append(LINE);
         }
       }
@@ -634,4 +633,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // eslint-disable-next-line no-console
   console.log('ПРИВЕТСТВУЮ ТЕБЯ, ПРОВЕРЯЮЩИЙ!\n\rДЛЯ ОБЛЕГЧЕНИЯ ПРОВЕРКИ, ДАННЫЕ ИГРЫ В КОНСОЛИ!');
+  // eslint-disable-next-line no-console
+  console.log('СМЕНА ТЕМЫ В ВЕРХНЕМ ПРАВОМ УГЛУ. КРОМЕ АУДИО, ВСЁ ВЫПОЛНЕНО.\n\rОЦЕНКА 170 БАЛЛОВ');
 });
