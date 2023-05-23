@@ -244,8 +244,8 @@ main,
 	align-items: center;
 	justify-content: center;
   gap: 10px;
-  line-height: 0.8rem;
-  font-size: 0.75rem;
+  line-height: 0.75rem;
+  font-size: 0.6rem;
   background-color: var(--score-slat);
     -webkit-transition: width 2s ease;
             transition: width 2s ease;
@@ -260,6 +260,8 @@ main,
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 0.75rem;
+  font-size: 0.6rem;
   color: var(--text-white);
 }
 .openscr {
