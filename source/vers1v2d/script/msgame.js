@@ -72,6 +72,7 @@ const MINESWEEPER = {
     mstempl: null,
     arrbombs: [],
     arrflags: [],
+    score10: [],
     gameover: false,
     mstheme: 'light',
     msmain: '',
@@ -106,6 +107,20 @@ const MINESWEEPER = {
       }, 1000);
     } else {
       clearInterval(this.MSTIMER);
+    }
+  },
+  writeScore10(final) {
+    const SCORE = {};
+    const DATEN = Date.now().toString().slice(10);
+    SCORE.GAME = `GAME:${DATEN}`;
+    SCORE.CLICK = `CLICK:${this.MSSTATE.msclicks}`;
+    SCORE.TIME = `TIME:${this.MSSTATE.mstimes}`;
+    SCORE.FINAL = `FINAL:${final}`;
+    if (this.MSSTATE.score10.length < 10) {
+      this.MSSTATE.score10.push(SCORE);
+    } else {
+      this.MSSTATE.score10.splice(0, 1);
+      this.MSSTATE.score10.push(SCORE);
     }
   },
   MSHTMLELEM: document.querySelector(':root'),
@@ -231,6 +246,10 @@ const MINESWEEPER = {
         <label class="label"><input type="radio" name="size" value="medium">x15</label>
         <label class="label"><input type="radio" name="size" value="large">x25</label>
       </div>
+      <div class="score10" id="score10">
+        <div class="iconscr">🏆</div>
+        <div class="listscr"></div>
+      </div>
     </div>`;
   },
   renderMS(MSSIZE, MSTYPE) {
@@ -287,6 +306,28 @@ const MINESWEEPER = {
       this.runTimer(false);
       localStorage.clear();
       this.initialize(ENUMS[CHECK.firstChild.value]);
+    }
+    if (TARGET.closest('.score10')) {
+      const SCORLIST = TARGET.closest('.score10').children[1];
+      if (SCORLIST.classList.contains('openscr')) {
+        SCORLIST.classList.remove('openscr');
+        const LENGTH = SCORLIST.children.length;
+        const PAUSE = setInterval(() => {
+          for (let i = 0; i < LENGTH; i += 1) {
+            SCORLIST.lastChild.remove();
+            if (!SCORLIST.hasChildNodes()) {
+              clearInterval(PAUSE);
+            }
+          }
+        }, 1000);
+      } else {
+        SCORLIST.classList.add('openscr');
+        for (let i = 0; i < this.MSSTATE.score10.length; i += 1) {
+          const LINE = document.createElement('div');
+          LINE.append(Object.values(this.MSSTATE.score10[i]).join(' '));
+          SCORLIST.append(LINE);
+        }
+      }
     }
   },
   mainRightHandler(event) {
@@ -382,6 +423,7 @@ const MINESWEEPER = {
     SMILE.firstChild.textContent = '🤕';
     TEXT.firstChild.textContent = 'YOU LOSE!';
     this.addToState(document.body.innerHTML);
+    this.writeScore10('💥LOSE');
     this.openLeftover();
   },
   gameWinner() {
@@ -396,6 +438,7 @@ const MINESWEEPER = {
     SMILE.firstChild.textContent = '🤩';
     TEXT.firstChild.textContent = 'YOU WON!';
     this.addToState(document.body.innerHTML);
+    this.writeScore10('⭐WON');
   },
   isWinner() {
     const CELLS = this.MSSTATE.mscells;
@@ -506,6 +549,7 @@ const MINESWEEPER = {
     MSHTML.style.setProperty('--bord-dark', '#333');
     MSHTML.style.setProperty('--text-black', 'whitesmoke');
     MSHTML.style.setProperty('--text-crims', 'crimson');
+    MSHTML.style.setProperty('--score-slat', 'indigo');
     MSHTML.style.setProperty('--one-blue', 'skyblue');
     MSHTML.style.setProperty('--two-green', 'limegreen');
     MSHTML.style.setProperty('--three-red', 'red');
@@ -529,6 +573,7 @@ const MINESWEEPER = {
     MSHTML.style.setProperty('--bord-dark', 'darkgray');
     MSHTML.style.setProperty('--text-black', 'black');
     MSHTML.style.setProperty('--text-crims', 'crimson');
+    MSHTML.style.setProperty('--score-slat', 'slateblue');
     MSHTML.style.setProperty('--one-blue', 'blue');
     MSHTML.style.setProperty('--two-green', 'green');
     MSHTML.style.setProperty('--three-red', 'red');
