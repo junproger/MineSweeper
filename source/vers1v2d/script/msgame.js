@@ -73,6 +73,7 @@ const MINESWEEPER = {
     arrbombs: [],
     arrflags: [],
     gameover: false,
+    mstheme: 'light',
     msmain: '',
   },
   MSGAMEBOMBS: [],
@@ -107,6 +108,7 @@ const MINESWEEPER = {
       clearInterval(this.MSTIMER);
     }
   },
+  MSHTMLELEM: document.querySelector(':root'),
   initialize(enums) {
     this.constReset();
     this.runTimer(false);
@@ -140,11 +142,13 @@ const MINESWEEPER = {
   },
   savetoLocalStorage() {
     localStorage.setItem('junpr#7638markMSGame', 'true');
+    localStorage.setItem('junpr#7638themeMSGame', `${this.MSSTATE.mstheme}`);
     localStorage.setItem('junpr#7638stateMSGame', `${JSON.stringify(this.MSSTATE)}`);
   },
   loadfromLocalStorage() {
     const MARK = localStorage.getItem('junpr#7638markMSGame');
     if (MARK) {
+      const THEME = localStorage.getItem('junpr#7638themeMSGame');
       const STATE = JSON.parse(localStorage.getItem('junpr#7638stateMSGame'));
       this.MSSTATE = STATE;
       this.GAMECLICKS(this.MSSTATE.msclicks);
@@ -152,11 +156,13 @@ const MINESWEEPER = {
       this.MSGAMEBOMBS = [...this.MSSTATE.arrbombs];
       this.MSGAMEFLAGS = [...this.MSSTATE.arrflags];
       document.body.innerHTML = `${this.MSSTATE.msmain}`;
+      if (THEME === 'dark') this.switchToDarkTheme();
       this.checkField();
       this.gameInform();
       this.gameClicks();
       this.addListeners();
       if (this.MSSTATE.gameover) return;
+      if (!this.MSSTATE.arrbombs.length) return;
       this.runTimer(true);
     } else {
       MINESWEEPER.initialize(ENUMS.small);
@@ -255,11 +261,13 @@ const MINESWEEPER = {
   addListeners() {
     const MAIN = document.getElementById('main');
     const HEAD = document.getElementById('head');
+    const MENU = document.getElementById('menu');
     const GAME = document.getElementById('game');
     const SIDE = document.getElementById('side');
     MAIN.addEventListener('click', (event) => this.mainLeftHandler(event));
     MAIN.addEventListener('contextmenu', (event) => this.mainRightHandler(event));
     HEAD.addEventListener('click', (event) => this.headHandler(event));
+    MENU.addEventListener('click', (event) => this.menuHandler(event));
     GAME.addEventListener('click', (event) => this.gameLeftHandler(event));
     GAME.addEventListener('contextmenu', (event) => this.gameRightHandler(event));
     SIDE.addEventListener('click', this.sideHandler);
@@ -299,6 +307,20 @@ const MINESWEEPER = {
       this.initialize(this.MSSTATE.msdata);
     }
   },
+  menuHandler(event) {
+    event.preventDefault();
+    if (event.target.id === 'toggler') {
+      if (event.target.classList.contains('togglerL')) {
+        event.target.classList.remove('togglerL');
+        event.target.classList.add('togglerR');
+        this.switchToDarkTheme();
+      } else {
+        event.target.classList.remove('togglerR');
+        event.target.classList.add('togglerL');
+        this.switchToLightTheme();
+      }
+    }
+  },
   gameLeftHandler(event) {
     event.preventDefault();
     if (!event.target.dataset.id) return;
@@ -318,6 +340,7 @@ const MINESWEEPER = {
       // eslint-disable-next-line no-console
       console.log(`BOOM 💥 BOMB ON ${CELLID}`);
       TARGET.classList.add('open');
+      this.runTimer(false);
       TARGET.append('💥');
       this.gameOver();
     } else {
@@ -469,6 +492,52 @@ const MINESWEEPER = {
         }
       }
     }
+  },
+  switchToDarkTheme() {
+    this.MSSTATE.mstheme = 'dark';
+    const MSHTML = this.MSHTMLELEM;
+    MSHTML.style.setProperty('--back-silv', '#000');
+    MSHTML.style.setProperty('--back-dark', '#333');
+    MSHTML.style.setProperty('--back-light', '#666');
+    MSHTML.style.setProperty('--back-rosy', 'rosybrown');
+    MSHTML.style.setProperty('--bord-gray', '#aaa');
+    MSHTML.style.setProperty('--bord-silv', '#aaa');
+    MSHTML.style.setProperty('--bord-light', '#666');
+    MSHTML.style.setProperty('--bord-dark', '#333');
+    MSHTML.style.setProperty('--text-black', 'whitesmoke');
+    MSHTML.style.setProperty('--text-crims', 'crimson');
+    MSHTML.style.setProperty('--one-blue', 'skyblue');
+    MSHTML.style.setProperty('--two-green', 'limegreen');
+    MSHTML.style.setProperty('--three-red', 'red');
+    MSHTML.style.setProperty('--four-drblu', 'navy');
+    MSHTML.style.setProperty('--five-drred', 'maroon');
+    MSHTML.style.setProperty('--six-orange', 'orange');
+    MSHTML.style.setProperty('--seven-blck', 'whitesmoke');
+    MSHTML.style.setProperty('--eight-grey', 'grey');
+    this.addToState(document.body.innerHTML);
+  },
+  switchToLightTheme() {
+    this.MSSTATE.mstheme = 'light';
+    const MSHTML = this.MSHTMLELEM;
+    MSHTML.style.setProperty('--back-silv', 'silver');
+    MSHTML.style.setProperty('--back-dark', 'darkgray');
+    MSHTML.style.setProperty('--back-light', 'lightgray');
+    MSHTML.style.setProperty('--back-rosy', 'rosybrown');
+    MSHTML.style.setProperty('--bord-gray', 'gray');
+    MSHTML.style.setProperty('--bord-silv', 'silver');
+    MSHTML.style.setProperty('--bord-light', 'lightgray');
+    MSHTML.style.setProperty('--bord-dark', 'darkgray');
+    MSHTML.style.setProperty('--text-black', 'black');
+    MSHTML.style.setProperty('--text-crims', 'crimson');
+    MSHTML.style.setProperty('--one-blue', 'blue');
+    MSHTML.style.setProperty('--two-green', 'green');
+    MSHTML.style.setProperty('--three-red', 'red');
+    MSHTML.style.setProperty('--four-drblu', 'darkblue');
+    MSHTML.style.setProperty('--five-drred', 'darkred');
+    MSHTML.style.setProperty('--six-orange', 'orangered');
+    MSHTML.style.setProperty('--seven-blck', 'black');
+    MSHTML.style.setProperty('--eight-grey', 'grey');
+    this.addToState(document.body.innerHTML);
   },
   numbColorize(TARGET, NEAR) {
     switch (NEAR) {

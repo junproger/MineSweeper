@@ -12,12 +12,30 @@ main {
     -moz-box-sizing: border-box;
       box-sizing: border-box;
 }
+:root {
+  --back-silv: silver;
+  --back-dark: darkgray;
+  --back-light: lightgray;
+  --back-rosy: rosybrown;
+  --bord-gray: gray;
+  --bord-silv: silver;
+  --bord-light: lightgray;
+  --bord-dark: darkgray;
+  --text-black: black;
+  --text-crims: crimson;
+  --one-blue: blue;
+  --two-green: green;
+  --three-red: red;
+  --four-drblu: darkblue;
+  --five-drred: darkred;
+  --six-orange: orange;
+  --seven-blck: black;
+  --eight-grey: grey;
+}
 html,
 body {
   height: 100%;
-  color: black;
-  border-color: black;
-  background-color: silver;
+  background-color: var(--back-silv);
   box-sizing: border-box;
   line-height: 22px;
   font-size: 20px;
@@ -44,7 +62,8 @@ main,
   align-items: center;
   padding: 2px;
   gap: 2px 2px;
-  border: 2px solid gray;
+  border: 2px solid;
+  border-color: var(--bord-gray);
 }
 .viewmin {
   width: 100vmin;
@@ -60,7 +79,7 @@ main,
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  background-color: darkgray;
+  background-color: var(--back-dark);
   line-height: 1rem;
   font-size: 0.9rem;
 }
@@ -68,7 +87,8 @@ main,
   width: 33%;
   height: 100%;
   flex: 0 1 auto;
-  border: 1px solid gray;
+  border: 1px solid;
+  border-color: var(--bord-gray);
   gap: 2px 2px;
 }
 .inform {
@@ -77,13 +97,14 @@ main,
   justify-content: space-around;
   align-items: center;
   gap: 5px 5px;
-  color: crimson;
+  color: var(--text-crims);
 }
 .status {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
+  color: var(--text-black);
   gap: 3px 3px;
 }
 .status:hover {
@@ -95,7 +116,7 @@ main,
   justify-content: space-around;
   align-items: center;
   gap: 5px 5px;
-  color: crimson;
+  color: var(--text-crims);
 }
 .menu {
   width: 8%;
@@ -104,9 +125,48 @@ main,
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: silver;
-  border: 2px solid gray;
+  background-color: var(--back-dark);
+  border: 2px solid;
+  border-color: var(--bord-gray);
   padding: 2px;
+}
+.togglerL {
+  width: 99%;
+  height: 99%;
+  border-top: 19px solid;
+  border-left: 19px solid;
+  border-color: var(--bord-light);
+}
+.togglerR {
+  width: 99%;
+  height: 99%;
+  border-right: 19px solid;
+  border-bottom: 19px solid;
+  border-color: var(--bord-gray);
+}
+.togglerL:hover {
+  cursor: pointer;
+  border-color: var(--bord-gray);
+}
+.togglerR:hover {
+  cursor: pointer;
+  border-color: var(--bord-light);
+}
+.togglerL:active {
+  cursor: pointer;
+  border-top: none;
+  border-left: none;
+  border-right: 19px solid;
+  border-bottom: 19px solid;
+  border-color: var(--bord-gray);
+}
+.togglerR:active {
+  cursor: pointer;
+  border-top: 19px solid;
+  border-left: 19px solid;
+  border-right: none;
+  border-bottom: none;
+  border-color: var(--bord-light);
 }
 .side {
   width: 8%;
@@ -116,12 +176,13 @@ main,
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: darkgray;
-  border: 1px solid gray;
+  background-color: var(--back-dark);
+  border: 1px solid;
+  border-color: var(--bord-gray);
   line-height: 0.9rem;
   font-size: 0.8rem;
   padding-top: 1rem;
-  color: black;
+  color: var(--text-black);
 }
 .field {
   width: 100%;
@@ -213,20 +274,20 @@ main,
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: silver;
+  background-color: var(--back-silv);
   border-width: 1px;
   border-style: solid;
-  border-color: gray;
+  border-color: var(--bord-gray);
 }
 .cells:hover {
   cursor: pointer;
-  border-color: silver;
-  background-color: darkgray;
+  border-color: var(--bord-silv);
+  background-color: var(--back-dark);
 }
 .cells:active {
   cursor: pointer;
-  border-color: silver;
-  background-color: lightgray;
+  border-color: var(--bord-silv);
+  background-color: var(--back-light);
 }
 .mini {
   line-height: 24px;
@@ -260,39 +321,39 @@ main,
 .open:hover,
 .open:active {
   cursor: default;
-  border-color: darkgray;
-  background-color: lightgray;
+  border-color: var(--bord-dark);
+  background-color: var(--back-light);
 }
 .mark,
 .mark:hover,
 .mark:active {
   cursor: pointer;
-  border-color: darkgray;
-  background-color: rosybrown;
+  border-color: var(--bord-dark);
+  background-color: var(--back-rosy);
 }
 .blue {
-  color: blue;
+  color: var(--one-blue);
 }
 .green {
-  color: green;
+  color: var(--two-green);
 }
 .red {
-  color: red;
+  color: var(--three-red);
 }
 .darkblue {
-  color: darkblue;
+  color: var(--four-drblu);
 }
 .darkred {
-  color: darkred;
+  color: var(--five-drred);
 }
 .orange {
-  color: orangered;
+  color: var(--six-orange);
 }
 .black {
-  color: black;
+  color: var(--seven-blck);
 }
 .grey {
-  color: grey;
+  color: var(--eight-grey);
 }
 
 @media (max-width: 980px) {
