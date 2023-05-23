@@ -260,8 +260,6 @@ main,
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 0.75rem;
-  font-size: 0.6rem;
   color: var(--text-white);
 }
 .openscr {
@@ -431,6 +429,10 @@ main,
     line-height: 1rem;
     font-size: 0.9rem;
   }
+  .listscr {
+    line-height: 0.75rem;
+    font-size: 0.6rem;
+  }
 }
 
 @media (max-width: 760px) {
@@ -454,6 +456,10 @@ main,
   .cells {
     border-width: 0.5px;
   }
+  .listscr {
+    line-height: 0.65rem;
+    font-size: 0.55rem;
+  }
 }
 
 @media (max-width:520px) {
@@ -476,5 +482,9 @@ main,
   }
   .cells {
     border-width: 0.5px;
+  }
+  .listscr {
+    line-height: 0.6rem;
+    font-size: 0.5rem;
   }
 }
