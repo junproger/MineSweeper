@@ -251,7 +251,7 @@ main,
             transition: width 2s ease;
 }
 .listscr div {
-  width: 96%;
+  width: 99%;
   height: 40px;
   border: 1px solid;
   border-color: var(--bord-silv);
@@ -263,7 +263,7 @@ main,
   color: var(--text-white);
 }
 .openscr {
-	width: 56vmin;
+	width: 66vmin;
     -webkit-transition: width 2s ease;
             transition: width 2s ease;
 }
@@ -457,8 +457,8 @@ main,
     border-width: 0.5px;
   }
   .listscr {
-    line-height: 0.65rem;
-    font-size: 0.55rem;
+    line-height: 0.6rem;
+    font-size: 0.5rem;
   }
 }
 
@@ -484,7 +484,7 @@ main,
     border-width: 0.5px;
   }
   .listscr {
-    line-height: 0.6rem;
-    font-size: 0.5rem;
+    line-height: 0.5rem;
+    font-size: 0.4rem;
   }
 }
